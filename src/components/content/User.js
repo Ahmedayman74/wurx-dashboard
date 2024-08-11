@@ -23,22 +23,33 @@ const User = () => {
   // Function to convert user data to CSV format
   const convertUserToCSV = (user) => {
     const csvHeader = "Name,Position,Email,Phone\n"; // Add any fields you need
-    const csvRow = `${user.name || ''},${user.position || ''},${user.email || ''},${user.phone || ''}\n`; // Add other fields as necessary
+    const csvRow = `${user.name || ""},${user.position || ""},${
+      user.email || ""
+    },${user.phone || ""}\n`; // Add other fields as necessary
     return csvHeader + csvRow;
   };
 
   // Function to trigger the CSV download
   const handleDownloadContact = () => {
     const csv = convertUserToCSV(user);
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `${user.name || 'contact'}.csv`);
-    link.style.visibility = 'hidden';
+
+    // Ensure the file has the .csv extension and a valid name
+    const fileName = `${
+      user.name ? user.name.replace(/ /g, "_") : "contact"
+    }.csv`;
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName; // Ensure .csv extension
+    link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    // Revoke the URL object after the download to free memory
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -60,8 +71,7 @@ const User = () => {
         </p>
         <button
           className="mt-2 bg-fuchsia-600 text-white px-5 py-2 rounded-md"
-          onClick={handleDownloadContact}
-        >
+          onClick={handleDownloadContact}>
           Download Contact
         </button>
         <QRCode
