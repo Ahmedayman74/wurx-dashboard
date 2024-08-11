@@ -14,10 +14,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const Schema = Yup.object().shape({
-    username: Yup.string()
-      .min(3, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Username is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
 
     password: Yup.string()
       .min(6, "Too Short!")
@@ -27,14 +24,14 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
+      email: "",
       password: "",
     },
     validationSchema: Schema,
-    onSubmit: async ({ username, password }) => {
+    onSubmit: async ({ email, password }) => {
       const resultAction = await dispatch(
         login({
-          adminname: username,
+          email: email,
           password: password,
         })
       );
@@ -55,18 +52,18 @@ const Login = () => {
         />
         <form className="w-full" onSubmit={formik.handleSubmit}>
           <div className="grid w-full items-center gap-1.5 mb-4">
-            <Label htmlFor="username">Username</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
-              type="text"
-              id="username"
-              placeholder="Username"
+              type="email"
+              id="email"
+              placeholder="email"
               onChange={formik.handleChange}
-              value={formik.values.username}
+              value={formik.values.email}
             />
             <p>
-              {formik.errors.username && formik.touched.username ? (
+              {formik.errors.email && formik.touched.email ? (
                 <p className=" text-red-500 text-xs my-1">
-                  {formik.errors.username}
+                  {formik.errors.email}
                 </p>
               ) : null}
             </p>

@@ -12,21 +12,39 @@ import { useSelector } from "react-redux";
 function App() {
   const auth = useSelector((state) => state.auth);
 
+  console.log(auth);
+
   return (
     <div className="App font-mont">
       <Routes>
         {/* Public Routes */}
         <Route path="login" element={<Login />} />
-        <Route path="dashboard/users/:userId" element={<User />} />
+        {/* <Route
+          path="dashboard/users/:userId"
+          element={
+            auth.token && auth.role === "employee" ? (
+              <User />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        /> */}
 
         {/* Protected Routes */}
         <Route
           path="/"
-          element={auth.token ? <Content /> : <Navigate to="/login" />}>
+          element={
+            auth.token && auth.role === "admin" ? (
+              <Content />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="adduser" element={<AddUser />} />
           <Route path="edituser" element={<EditUser />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="dashboard/users/:userId" element={<User />} />
         </Route>
 
         {/* Redirect all other unmatched routes to login */}

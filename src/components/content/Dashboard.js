@@ -10,17 +10,22 @@ import {
 } from "../ui/table.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
+  const token = useSelector((state) => state.auth.token);
   const [users, setUsers] = useState([]);
   useEffect(() => {
     axios
-      .get("https://tasktrial.vercel.app/allUsers")
+      .get("https://tasktrial.vercel.app/allUsers", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(function (response) {
         setUsers(response.data);
       })
       .catch(function (error) {
-        // handle error
         console.log(error);
       });
   }, []);

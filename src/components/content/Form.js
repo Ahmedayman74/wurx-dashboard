@@ -79,6 +79,7 @@ const Form = () => {
     validationSchema: Schema,
     onSubmit: ({
       name,
+      password,
       phone,
       companyName,
       avatar,
@@ -94,6 +95,8 @@ const Form = () => {
       languages,
     }) => {
       formData.append("name", name);
+      formData.append("password", password);
+
       formData.append("phone", phone);
       formData.append("companyName", companyName);
       formData.append("avatar", avatar);
@@ -117,7 +120,7 @@ const Form = () => {
           },
         })
         .then(function (response) {
-          console.log(response)
+          console.log(response);
           formik.resetForm();
           toast.success("User Successfully Added", {
             position: "bottom-right",
@@ -169,6 +172,27 @@ const Form = () => {
                 {formik.errors.name && formik.touched.name ? (
                   <p className=" text-red-500 text-xs my-1">
                     {formik.errors.name}
+                  </p>
+                ) : null}
+              </p>
+            </div>
+            <div className="mb-2">
+              <Label htmlFor="password">Password *</Label>
+              <Input
+                // onChange={(e) => {
+                //   setName(e.target.value);
+                // }}
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+                type="password"
+                id="password"
+                name="password"
+              />
+              <p>
+                {formik.errors.password && formik.touched.password ? (
+                  <p className=" text-red-500 text-xs my-1">
+                    {formik.errors.password}
                   </p>
                 ) : null}
               </p>
