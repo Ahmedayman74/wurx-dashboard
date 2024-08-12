@@ -8,28 +8,23 @@ import Settings from "./components/content/Settings";
 import User from "./components/content/User";
 import Login from "./components/content/Login";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 function App() {
   const auth = useSelector((state) => state.auth);
 
   console.log(auth);
 
+
   return (
     <div className="App font-mont">
       <Routes>
         {/* Public Routes */}
         <Route path="login" element={<Login />} />
-        {/* <Route
+        <Route
           path="dashboard/users/:userId"
-          element={
-            auth.token && auth.role === "employee" ? (
-              <User />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        /> */}
-
+          element={auth.token ? <User /> : <Navigate to="/login" />}
+        />
         {/* Protected Routes */}
         <Route
           path="/"
@@ -44,7 +39,6 @@ function App() {
           <Route path="adduser" element={<AddUser />} />
           <Route path="edituser" element={<EditUser />} />
           <Route path="settings" element={<Settings />} />
-          <Route path="dashboard/users/:userId" element={<User />} />
         </Route>
 
         {/* Redirect all other unmatched routes to login */}

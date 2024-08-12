@@ -20,29 +20,31 @@ const User = () => {
       });
   }, [params.userId]);
 
-  // Function to convert user data to CSV format
-  const convertUserToCSV = (user) => {
-    const csvHeader = "Name,Position,Email,Phone\n"; // Add any fields you need
-    const csvRow = `${user.name || ""},${user.position || ""},${
-      user.email || ""
-    },${user.phone || ""}\n`; // Add other fields as necessary
-    return csvHeader + csvRow;
+  // Function to convert user data to vCard format
+  const convertUserToVCard = (user) => {
+    return `BEGIN:VCARD
+VERSION:3.0
+FN:${user.name || ""}
+ORG:${user.position || ""}
+EMAIL:${user.email || ""}
+TEL:${user.phone || ""}
+END:VCARD`;
   };
 
-  // Function to trigger the CSV download
+  // Function to trigger the VCF download
   const handleDownloadContact = () => {
-    const csv = convertUserToCSV(user);
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const vCard = convertUserToVCard(user);
+    const blob = new Blob([vCard], { type: "text/vcard;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
 
-    // Ensure the file has the .csv extension and a valid name
+    // Ensure the file has the .vcf extension and a valid name
     const fileName = `${
       user.name ? user.name.replace(/ /g, "_") : "contact"
-    }.csv`;
+    }.vcf`;
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = fileName; // Ensure .csv extension
+    link.download = fileName; // Ensure .vcf extension
     link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
