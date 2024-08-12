@@ -312,7 +312,7 @@ const Form = () => {
                 ) : null}
               </p>
             </div>
-            <div className="mb-2">
+            {/* <div className="mb-2">
               <Label>Working Hours</Label>
               <Popover>
                 <PopoverTrigger asChild>
@@ -340,7 +340,7 @@ const Form = () => {
                   />
                 </PopoverContent>
               </Popover>
-            </div>
+            </div> */}
           </div>
           <div>
             <div className="mb-2">

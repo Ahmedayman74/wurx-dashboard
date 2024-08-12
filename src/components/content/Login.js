@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../rtk/slices/auth-slice";
 import { Navigate, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const Login = () => {
   });
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center h-screen px-10">
       <div className="flex flex-col items-center justify-center w-full max-w-md  ">
         <img
           className="w-40 mb-6"

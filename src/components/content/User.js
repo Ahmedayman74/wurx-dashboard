@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import QRCode from "react-qr-code";
+import { ArrowDown, ExternalLink, Facebook, Instagram, Twitter } from "lucide-react";
 
 const User = () => {
   const params = useParams();
@@ -56,32 +57,50 @@ END:VCARD`;
 
   return (
     <div className="relative">
-      <div className="hero-sec rounded-md"></div>
-      <div className="flex items-center justify-center">
-        <img
-          className="rounded-full w-32 h-32 -mt-10 shadow-md"
-          alt=""
-          src={user.avatar}
-        />
-      </div>
-      <div className="flex items-center justify-center flex-col">
-        <h1 className="mt-5 text-indigo-950 capitalize font-extrabold text-center text-xl">
-          {user.name}
-        </h1>
-        <p className="mt-1 text-fuchsia-500 capitalize font-medium text-center text-xl">
-          {user.position}
-        </p>
-        <button
-          className="mt-2 bg-fuchsia-600 text-white px-5 py-2 rounded-md"
-          onClick={handleDownloadContact}>
-          Download Contact
-        </button>
-        <QRCode
-          className="py-10"
-          size={256}
-          value={`${location.host}/dashboard/users/${params.userId}`}
-          viewBox={`0 0 256 256`}
-        />
+      <img
+        className="w-full -mt-10 shadow-md h-[66vh] object-cover"
+        alt=""
+        src={require("../../imgs/343986623_617392016686435_1115800384097123891_n.png")}
+      />
+      <div className="container px-10 pb-20">
+        <img className="w-32 h-32 -mt-10 shadow-md" alt="" src={user.avatar} />
+        <div className="flex justify-between gap-10 mt-10">
+          <div>
+            <div>
+              <p className="text-indigo-950">Name</p>
+              <h1 className=" text-[#AF0A81] capitalize font-extrabold  text-xl">
+                {user.name}
+              </h1>
+            </div>
+            <div className="mt-3">
+              <p className="text-indigo-950">Position</p>
+              <p className="mt-1 text-indigo-950 capitalize font-extrabold  text-xl">
+                {user.position}
+              </p>
+            </div>
+            <div className="flex items-center gap-5 mt-10">
+              <button
+                className="bg-[#AF0A81] text-white px-5 py-2 rounded-md flex items-center gap-4"
+                onClick={handleDownloadContact}>
+                <span>
+                  <ArrowDown />
+                </span>
+                <span>Contact</span>
+              </button>
+              <ExternalLink strokeWidth={2.5} size={39} />
+            </div>
+            <div className=" mt-5 flex items-center gap-4">
+              <Facebook size={39} strokeWidth={2.5} />
+              <Instagram size={39} strokeWidth={2.5} />
+              <Twitter size={39} strokeWidth={2.5} />
+            </div>
+          </div>
+          <QRCode
+            size={130}
+            value={`${location.host}/dashboard/users/${params.userId}`}
+            viewBox={`0 0 130 130`}
+          />
+        </div>
       </div>
     </div>
   );

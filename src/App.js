@@ -9,12 +9,13 @@ import User from "./components/content/User";
 import Login from "./components/content/Login";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const auth = useSelector((state) => state.auth);
 
   console.log(auth);
-
 
   return (
     <div className="App font-mont">
@@ -44,6 +45,19 @@ function App() {
         {/* Redirect all other unmatched routes to login */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="light"
+      />
     </div>
   );
 }
