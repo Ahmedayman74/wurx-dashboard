@@ -2,12 +2,18 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import QRCode from "react-qr-code";
-import { ArrowDown, ExternalLink, Facebook, Instagram, Twitter } from "lucide-react";
+import {
+  ArrowDown,
+  ExternalLink,
+  Facebook,
+  Instagram,
+  Twitter,
+} from "lucide-react";
 
 const User = () => {
   const params = useParams();
   const [user, setUser] = useState({});
-  const location = window.location;
+  const [downloadTriggered, setDownloadTriggered] = useState(false);
 
   useEffect(() => {
     axios
@@ -33,34 +39,50 @@ END:VCARD`;
   };
 
   // Function to trigger the VCF download
-  const handleDownloadContact = () => {
-    const vCard = convertUserToVCard(user);
+  const triggerDownload = (vCard, fileName) => {
     const blob = new Blob([vCard], { type: "text/vcard;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
 
-    // Ensure the file has the .vcf extension and a valid name
-    const fileName = `${
-      user.name ? user.name.replace(/ /g, "_") : "contact"
-    }.vcf`;
-
     const link = document.createElement("a");
     link.href = url;
-    link.download = fileName; // Ensure .vcf extension
+    link.download = fileName;
     link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
-    // Revoke the URL object after the download to free memory
     URL.revokeObjectURL(url);
   };
+
+  const handleDownloadContact = () => {
+    const vCard = convertUserToVCard(user);
+    const fileName = `${
+      user.name ? user.name.replace(/ /g, "_") : "contact"
+    }.vcf`;
+    triggerDownload(vCard, fileName);
+  };
+
+  useEffect(() => {
+    if (
+      !downloadTriggered &&
+      window.location.pathname.includes("/download-contact") &&
+      user.name
+    ) {
+      setDownloadTriggered(true);
+      const vCard = convertUserToVCard(user);
+      const fileName = `${
+        user.name ? user.name.replace(/ /g, "_") : "contact"
+      }.vcf`;
+      triggerDownload(vCard, fileName);
+    }
+  }, [user, downloadTriggered]);
 
   return (
     <div className="relative">
       <img
-        className="w-full -mt-10 shadow-md h-[66vh] object-cover"
+        className="w-full -mt-10 shadow-md"
         alt=""
-        src={require("../../imgs/343986623_617392016686435_1115800384097123891_n.png")}
+        src={require("../../imgs/image 3 (1).png")}
       />
       <div className="container px-10 pb-20">
         <img className="w-32 h-32 -mt-10 shadow-md" alt="" src={user.avatar} />
@@ -87,17 +109,17 @@ END:VCARD`;
                 </span>
                 <span>Contact</span>
               </button>
-              <ExternalLink strokeWidth={2.5} size={39} />
             </div>
             <div className=" mt-5 flex items-center gap-4">
-              <Facebook size={39} strokeWidth={2.5} />
-              <Instagram size={39} strokeWidth={2.5} />
-              <Twitter size={39} strokeWidth={2.5} />
+              <img alt="" src={require("../../imgs/Vector (10).png")} />
+              <img alt="" src={require("../../imgs/Vector (11).png")} />
+              <img alt="" src={require("../../imgs/Vector (12).png")} />
+              <img alt="" src={require("../../imgs/Vector (13).png")} />
             </div>
           </div>
           <QRCode
             size={130}
-            value={`${location.host}/dashboard/users/${params.userId}`}
+            value={`${window.location.origin}/download-contact/${params.userId}`}
             viewBox={`0 0 130 130`}
           />
         </div>

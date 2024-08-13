@@ -26,6 +26,11 @@ function App() {
           path="dashboard/users/:userId"
           element={auth.token ? <User /> : <Navigate to="/login" />}
         />
+                <Route
+          path="download-contact/:userId"
+          element={<User /> }
+        />
+        
         {/* Protected Routes */}
         <Route
           path="/"
