@@ -38,7 +38,7 @@ const User = () => {
   EMAIL:${user.email || ""}
   TEL:${user.phone || ""}
   URL:${user.website || ""}
-  ADR:;;${user.companyName || ""}
+  ADR:${user.companyName || ""}
   END:VCARD`;
   };
 
