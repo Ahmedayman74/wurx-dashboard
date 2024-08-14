@@ -32,13 +32,14 @@ const User = () => {
   // Function to convert user data to vCard format
   const convertUserToVCard = (user) => {
     return `BEGIN:VCARD
-VERSION:3.0
-FN:${user.name || ""}
-ORG:${user.position || ""}
-EMAIL:${user.email || ""}
-TEL:${user.phone || ""}
-URL:${user.website || ""}
-END:VCARD`;
+  VERSION:3.0
+  FN:${user.name || ""}
+  ORG:${user.position || ""}
+  EMAIL:${user.email || ""}
+  TEL:${user.phone || ""}
+  URL:${user.website || ""}
+  ADR:;;${user.companyName || ""}
+  END:VCARD`;
   };
 
   // Function to trigger the VCF download
