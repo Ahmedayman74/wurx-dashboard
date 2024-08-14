@@ -10,6 +10,7 @@ import {
   MapPin,
   Twitter,
 } from "lucide-react";
+import ModalImage from "react-modal-image";
 
 const User = () => {
   const params = useParams();
@@ -81,13 +82,14 @@ END:VCARD`;
 
   return (
     <div className="flex flex-col items-center justify-center bg-[#eee]">
-      <div className="relative md:max-w-lg bg-white">
-        <img
-          className="w-full py-5 container px-10"
-          alt=""
-          src={require("../../imgs/WhatsApp Image 2024-08-14 at 16.43.53_42e78109 1.png")}
+      <div className="relative container px-10 md:max-w-lg bg-white">
+        <ModalImage
+          className="w-full py-5 "
+          small={require("../../imgs/WhatsApp Image 2024-08-14 at 16.43.53_42e78109 1.png")}
+          large={require("../../imgs/WhatsApp Image 2024-08-14 at 16.43.53_42e78109 1.png")}
+          alt="Bussines Card"
         />
-        <div className="container px-10 pb-10">
+        <div className="pb-10">
           <div className="flex items-center justify-between">
             <img className="w-32 h-32 rounded-xl" alt="" src={user.avatar} />
             <img
@@ -99,29 +101,38 @@ END:VCARD`;
           <div className="flex justify-between gap-10 mt-10">
             <div>
               <div>
-                <p className="text-indigo-950">Name</p>
-                <h1 className=" text-indigo-950 capitalize font-extrabold  text-lg">
+                <p className="text-indigo-950 font-extrabold">Name</p>
+                <h1 className=" text-indigo-950 capitalize   text-lg">
                   {user.name}
                 </h1>
               </div>
               <div className="mt-3">
-                <p className="text-indigo-950">Position</p>
+                <p className="text-indigo-950 font-extrabold">Position</p>
                 <p className="mt-1 text-indigo-950 capitalize  text-lg">
                   {user.position}
                 </p>
               </div>
 
               <div className="mt-3">
-                <p className="text-indigo-950">Phone</p>
+                <p className="text-indigo-950 font-extrabold">Phone</p>
                 <p className="mt-1 text-indigo-950 capitalize  text-lg">
                   {user.phone}
                 </p>
               </div>
 
               <div className="mt-3">
-                <p className="text-indigo-950">Website</p>
-                <p className="mt-1 text-indigo-950 capitalize font-extrabold  text-lg">
-                  {user.website}
+                <p className="text-indigo-950 font-extrabold">Postal Code</p>
+                <p className="mt-1 text-indigo-950 capitalize  text-lg">
+                  {user.companyName}
+                </p>
+              </div>
+
+              <div className="mt-3">
+                <p className="text-indigo-950 font-extrabold">Website</p>
+                <p className="mt-1 text-indigo-950 capitalize  text-lg">
+                  <a target="blank" href={`https://${user.website}`}>
+                    {user.website}
+                  </a>
                 </p>
               </div>
             </div>
