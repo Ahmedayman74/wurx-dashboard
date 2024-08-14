@@ -36,6 +36,10 @@ const Form = () => {
         "Phone number must start with 0 and have 11 digits"
       )
       .required("Phone number is required"),
+    password: Yup.string()
+      .min(6, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Password is required"),
     position: Yup.string()
       .min(6, "Too Short!")
       .max(50, "Too Long!")
@@ -52,9 +56,9 @@ const Form = () => {
         value ? value.includes("facebook.com") : true
       ),
     xTwitter: Yup.string()
-      .url("Invalid Twitter URL")
-      .test("is-twitter-url", "Invalid Twitter URL", (value) =>
-        value ? value.includes("twitter.com") : true
+      .url("Invalid X URL")
+      .test("is-x-url", "Invalid X URL", (value) =>
+        value ? value.includes("x.com") : true
       ),
     linkedIn: Yup.string()
       .url("Invalid LinkedIn URL")
@@ -96,12 +100,10 @@ const Form = () => {
     }) => {
       formData.append("name", name);
       formData.append("password", password);
-
       formData.append("phone", phone);
       formData.append("companyName", companyName);
       formData.append("avatar", avatar);
       formData.append("cover", cover);
-
       formData.append("position", position);
       formData.append("email", email);
       formData.append("website", website);
@@ -179,9 +181,6 @@ const Form = () => {
             <div className="mb-2">
               <Label htmlFor="password">Password *</Label>
               <Input
-                // onChange={(e) => {
-                //   setName(e.target.value);
-                // }}
                 onChange={formik.handleChange}
                 value={formik.values.password}
                 onBlur={formik.handleBlur}
@@ -219,11 +218,8 @@ const Form = () => {
               </p>
             </div>
             <div className="mb-2">
-              <Label htmlFor="cname">Company name</Label>
+              <Label htmlFor="cname">Postal Code</Label>
               <Input
-                // onChange={(e) => {
-                //   setCname(e.target.value);
-                // }}
                 type="text"
                 id="cname"
                 name="companyName"
@@ -235,9 +231,6 @@ const Form = () => {
             <div className="mb-2">
               <Label htmlFor="img">Avatar</Label>
               <Input
-                // onChange={(e) => {
-                //   setImg(e.target.value);
-                // }}
                 type="file"
                 id="img"
                 name="avatar"

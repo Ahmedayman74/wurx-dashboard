@@ -7,6 +7,7 @@ import {
   ExternalLink,
   Facebook,
   Instagram,
+  MapPin,
   Twitter,
 } from "lucide-react";
 
@@ -35,6 +36,7 @@ FN:${user.name || ""}
 ORG:${user.position || ""}
 EMAIL:${user.email || ""}
 TEL:${user.phone || ""}
+URL:${user.website || ""}
 END:VCARD`;
   };
 
@@ -78,50 +80,107 @@ END:VCARD`;
   }, [user, downloadTriggered]);
 
   return (
-    <div className="relative">
-      <img
-        className="w-full -mt-10 shadow-md"
-        alt=""
-        src={require("../../imgs/image 3 (1).png")}
-      />
-      <div className="container px-10 pb-20">
-        <img className="w-32 h-32 -mt-10 shadow-md" alt="" src={user.avatar} />
-        <div className="flex justify-between gap-10 mt-10">
-          <div>
-            <div>
-              <p className="text-indigo-950">Name</p>
-              <h1 className=" text-[#AF0A81] capitalize font-extrabold  text-xl">
-                {user.name}
-              </h1>
-            </div>
-            <div className="mt-3">
-              <p className="text-indigo-950">Position</p>
-              <p className="mt-1 text-indigo-950 capitalize font-extrabold  text-xl">
-                {user.position}
-              </p>
-            </div>
-            <div className="flex items-center gap-5 mt-10">
-              <button
-                className="bg-[#AF0A81] text-white px-5 py-2 rounded-md flex items-center gap-4"
-                onClick={handleDownloadContact}>
-                <span>
-                  <ArrowDown />
-                </span>
-                <span>Contact</span>
-              </button>
-            </div>
-            <div className=" mt-5 flex items-center gap-4">
-              <img alt="" src={require("../../imgs/Vector (10).png")} />
-              <img alt="" src={require("../../imgs/Vector (11).png")} />
-              <img alt="" src={require("../../imgs/Vector (12).png")} />
-              <img alt="" src={require("../../imgs/Vector (13).png")} />
-            </div>
+    <div className="flex flex-col items-center justify-center bg-[#eee]">
+      <div className="relative md:max-w-lg bg-white">
+        <img
+          className="w-full py-5 container px-10"
+          alt=""
+          src={require("../../imgs/WhatsApp Image 2024-08-14 at 16.43.53_42e78109 1.png")}
+        />
+        <div className="container px-10 pb-10">
+          <div className="flex items-center justify-between">
+            <img className="w-32 h-32 rounded-xl" alt="" src={user.avatar} />
+            <img
+              className="w-32 h-32 "
+              alt=""
+              src={require("../../imgs/image 4 (3).png")}
+            />
           </div>
-          <QRCode
-            size={130}
-            value={`${window.location.origin}/download-contact/${params.userId}`}
-            viewBox={`0 0 130 130`}
-          />
+          <div className="flex justify-between gap-10 mt-10">
+            <div>
+              <div>
+                <p className="text-indigo-950">Name</p>
+                <h1 className=" text-indigo-950 capitalize font-extrabold  text-lg">
+                  {user.name}
+                </h1>
+              </div>
+              <div className="mt-3">
+                <p className="text-indigo-950">Position</p>
+                <p className="mt-1 text-indigo-950 capitalize  text-lg">
+                  {user.position}
+                </p>
+              </div>
+
+              <div className="mt-3">
+                <p className="text-indigo-950">Phone</p>
+                <p className="mt-1 text-indigo-950 capitalize  text-lg">
+                  {user.phone}
+                </p>
+              </div>
+
+              <div className="mt-3">
+                <p className="text-indigo-950">Website</p>
+                <p className="mt-1 text-indigo-950 capitalize font-extrabold  text-lg">
+                  {user.website}
+                </p>
+              </div>
+            </div>
+            <QRCode
+              size={130}
+              value={`${window.location.origin}/download-contact/${params.userId}`}
+              viewBox={`0 0 130 130`}
+            />
+          </div>
+          <div className="flex items-center justify-center gap-5 mt-10">
+            <button
+              className="bg-[#AF0A81] w-full text-white px-5 py-2 rounded-sm flex justify-center items-center gap-4"
+              onClick={handleDownloadContact}>
+              <span>
+                <ArrowDown />
+              </span>
+              <span>Download Contact</span>
+            </button>
+          </div>
+
+          <div className="flex items-center justify-center gap-5 py-5">
+            <a
+              target="blank"
+              href={
+                "https://www.google.com/maps/@31.2118627,29.9393604,15z?entry=ttu"
+              }
+              className="bg-indigo-950 w-full text-white px-5 py-2 rounded-sm flex justify-center items-center gap-4">
+              <span>
+                <MapPin />
+              </span>
+              <span>Open Maps</span>
+            </a>
+          </div>
+          <div className=" mt-5 flex items-center justify-center gap-4">
+            <a target="blank" href={user.facebook}>
+              <img alt="" src={require("../../imgs/Vector (10).png")} />
+            </a>
+            <a target="blank" href={user.xTwitter}>
+              <img
+                className="w-7 h-7"
+                alt=""
+                src={require("../../imgs/image 5 (3).png")}
+              />
+            </a>
+            <a target="blank" href={user.instagram}>
+              <img
+                className="w-7 h-7"
+                alt=""
+                src={require("../../imgs/Vector (15).png")}
+              />
+            </a>
+            <a target="blank" href={user.linkedIn}>
+              <img
+                className="w-7 h-7"
+                alt=""
+                src={require("../../imgs/Vector (16).png")}
+              />
+            </a>
+          </div>
         </div>
       </div>
     </div>

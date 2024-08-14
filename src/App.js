@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import Content from "./components/content/Content";
 import AddUser from "./components/content/AddUser";
@@ -8,7 +8,7 @@ import Settings from "./components/content/Settings";
 import User from "./components/content/User";
 import Login from "./components/content/Login";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -16,22 +16,25 @@ function App() {
   const auth = useSelector((state) => state.auth);
 
   console.log(auth);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth.token && auth.role === "employee") {
+      navigate(`dashboard/users/${auth.id}`);
+    }
+  }, [auth, navigate]);
 
   return (
     <div className="App font-mont">
       <Routes>
         {/* Public Routes */}
         <Route path="login" element={<Login />} />
+        <Route path="download-contact/:userId" element={<User />} />
+        {/* Protected Routes */}
         <Route
           path="dashboard/users/:userId"
           element={auth.token ? <User /> : <Navigate to="/login" />}
         />
-                <Route
-          path="download-contact/:userId"
-          element={<User /> }
-        />
-        
-        {/* Protected Routes */}
         <Route
           path="/"
           element={

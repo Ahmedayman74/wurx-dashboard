@@ -45,6 +45,7 @@ const authSlice = createSlice({
     status: "idle",
     error: null,
     role: "",
+    id: "",
   },
   extraReducers: (builder) => {
     builder
@@ -53,17 +54,20 @@ const authSlice = createSlice({
         state.token = "";
         state.error = null;
         state.role = "";
+        state.id = "";
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.token = action.payload.token; // Adjust this based on the actual response structure
         state.role = action.payload.role;
+        state.id = action.payload.id;
       })
       .addCase(login.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
         state.token = "";
         state.role = "";
+        state.id = "";
       });
   },
 });
