@@ -16,18 +16,18 @@ const MenuList = () => {
       link: "adduser",
       isActive: false,
     },
-    {
-      icon: <Pencil />,
-      menuItemText: "Edit User",
-      link: "edituser",
-      isActive: false,
-    },
-    {
-      icon: <Settings />,
-      menuItemText: "Settings",
-      link: "settings",
-      isActive: false,
-    },
+    // {
+    //   icon: <Pencil />,
+    //   menuItemText: "Edit User",
+    //   link: "edituser",
+    //   isActive: false,
+    // },
+    // {
+    //   icon: <Settings />,
+    //   menuItemText: "Settings",
+    //   link: "settings",
+    //   isActive: false,
+    // },
   ]);
 
   const handleItemClick = (index) => {

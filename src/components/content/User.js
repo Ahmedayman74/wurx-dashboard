@@ -29,30 +29,6 @@ const User = () => {
       });
   }, [params.userId]);
 
-  // Function to convert user data to vCard format
-  // const convertUserToVCard = (user) => {
-  //   return `BEGIN:VCARD
-  // VERSION:3.0
-  // FN:${user.name || ""}
-  // ORG:${user.position || ""}
-  // EMAIL:${user.email || ""}
-  // TEL:${user.phone || ""}
-  // URL:${user.website || ""}
-  // END:VCARD`;
-  // };
-
-  //   const convertUserToVCard = (user) => {
-  //     return `BEGIN:VCARD
-  // VERSION:3.0
-  // FN:${user.name || ""}
-  // ORG:${user.position || ""}
-  // EMAIL:${user.email || ""}
-  // TEL:${user.phone || ""}
-  // URL:${user.website || ""}
-  // NOTE:Postal Code: ${user.companyName || ""}
-  // END:VCARD`;
-  //   };
-
   const convertUserToVCard = (user) => {
     const firstName = user.fisrtname || "";
     const lastName = user.lastName || "";
