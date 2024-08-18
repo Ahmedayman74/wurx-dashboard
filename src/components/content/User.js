@@ -41,10 +41,26 @@ const User = () => {
   // END:VCARD`;
   // };
 
+  //   const convertUserToVCard = (user) => {
+  //     return `BEGIN:VCARD
+  // VERSION:3.0
+  // FN:${user.name || ""}
+  // ORG:${user.position || ""}
+  // EMAIL:${user.email || ""}
+  // TEL:${user.phone || ""}
+  // URL:${user.website || ""}
+  // NOTE:Postal Code: ${user.companyName || ""}
+  // END:VCARD`;
+  //   };
+
   const convertUserToVCard = (user) => {
+    const firstName = user.fisrtname || "";
+    const lastName = user.lastName || "";
+
     return `BEGIN:VCARD
 VERSION:3.0
-FN:${user.name || ""}
+FN:${firstName} ${lastName}
+N:${lastName};${firstName};;;
 ORG:${user.position || ""}
 EMAIL:${user.email || ""}
 TEL:${user.phone || ""}
@@ -71,7 +87,7 @@ END:VCARD`;
   const handleDownloadContact = () => {
     const vCard = convertUserToVCard(user);
     const fileName = `${
-      user.name ? user.name.replace(/ /g, "_") : "contact"
+      user.fisrtname ? user.fisrtname.replace(/ /g, "_") : "contact"
     }.vcf`;
     triggerDownload(vCard, fileName);
   };
@@ -80,12 +96,12 @@ END:VCARD`;
     if (
       !downloadTriggered &&
       window.location.pathname.includes("/download-contact") &&
-      user.name
+      user.fisrtname
     ) {
       setDownloadTriggered(true);
       const vCard = convertUserToVCard(user);
       const fileName = `${
-        user.name ? user.name.replace(/ /g, "_") : "contact"
+        user.fisrtname ? user.fisrtname.replace(/ /g, "_") : "contact"
       }.vcf`;
       triggerDownload(vCard, fileName);
     }
@@ -114,7 +130,7 @@ END:VCARD`;
               <div>
                 <p className="text-indigo-950 font-extrabold">Name</p>
                 <h1 className=" text-indigo-950 capitalize   text-lg">
-                  {user.name}
+                  {user.fisrtname + user.lastname}
                 </h1>
               </div>
               <div className="mt-3">

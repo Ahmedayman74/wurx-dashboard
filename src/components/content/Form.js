@@ -26,10 +26,14 @@ import "react-toastify/dist/ReactToastify.css";
 const Form = () => {
   let formData = new FormData();
   const Schema = Yup.object().shape({
-    name: Yup.string()
+    firstname: Yup.string()
       .min(6, "Too Short!")
       .max(50, "Too Long!")
-      .required("Name is required"),
+      .required("First Name is required"),
+    lastname: Yup.string()
+      .min(6, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Last Name is required"),
     phone: Yup.string()
       .matches(
         /^(0)\d{10}$/,
@@ -69,7 +73,9 @@ const Form = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      firstname: "",
+      lastname: "",
+      password : "",
       phone: "",
       companyName: "",
       position: "",
@@ -79,10 +85,12 @@ const Form = () => {
       xTwitter: "",
       linkedIn: "",
       instagram: "",
+      cover: "",
     },
     validationSchema: Schema,
     onSubmit: ({
-      name,
+      firstname,
+      lastname,
       password,
       phone,
       companyName,
@@ -98,7 +106,8 @@ const Form = () => {
       date,
       languages,
     }) => {
-      formData.append("name", name);
+      formData.append("firstname", firstname);
+      formData.append("lastname", lastname);
       formData.append("password", password);
       formData.append("phone", phone);
       formData.append("companyName", companyName);
@@ -158,22 +167,38 @@ const Form = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           <div>
             <div className="mb-2">
-              <Label htmlFor="name">Name *</Label>
+              <Label htmlFor="firstname">First Name *</Label>
               <Input
-                // onChange={(e) => {
-                //   setName(e.target.value);
-                // }}
                 onChange={formik.handleChange}
-                value={formik.values.name}
+                value={formik.values.firstname}
                 onBlur={formik.handleBlur}
                 type="text"
-                id="name"
-                name="name"
+                id="firstname"
+                name="firstname"
               />
               <p>
-                {formik.errors.name && formik.touched.name ? (
+                {formik.errors.firstname && formik.touched.firstname ? (
                   <p className=" text-red-500 text-xs my-1">
-                    {formik.errors.name}
+                    {formik.errors.firstname}
+                  </p>
+                ) : null}
+              </p>
+            </div>
+
+            <div className="mb-2">
+              <Label htmlFor="lastname">Last Name *</Label>
+              <Input
+                onChange={formik.handleChange}
+                value={formik.values.lastname}
+                onBlur={formik.handleBlur}
+                type="text"
+                id="lastname"
+                name="lastname"
+              />
+              <p>
+                {formik.errors.lastname && formik.touched.lastname ? (
+                  <p className=" text-red-500 text-xs my-1">
+                    {formik.errors.lastname}
                   </p>
                 ) : null}
               </p>
