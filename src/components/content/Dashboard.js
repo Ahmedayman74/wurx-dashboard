@@ -43,12 +43,12 @@ const Dashboard = () => {
   };
 
   const usersData = users.map(
-    ({ _id, fisrtname, lastname, phone, email, position, avatar }) => {
+    ({ _id, firstname, lastname, phone, email, position, avatar }) => {
       return (
         <TableRow>
           <Link to={`users/${_id}`}>
             <TableCell className="font-medium">
-              {fisrtname + lastname}
+              {firstname + lastname}
             </TableCell>
           </Link>
           <TableCell>{phone}</TableCell>

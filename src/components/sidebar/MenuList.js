@@ -1,27 +1,32 @@
 import React, { useState } from "react";
 import { Pencil, PieChart, Settings, User } from "lucide-react";
 import MenuItem from "./MenuItem";
+import { useSelector } from "react-redux";
 
 const MenuList = () => {
+  const auth = useSelector((state) => state.auth);
   const [menuItems, setMenuItems] = useState([
     {
       icon: <PieChart />,
       menuItemText: "Dashboard",
       link: "dashboard",
       isActive: false,
+      isSuperAdmin : true
     },
     {
       icon: <User />,
       menuItemText: "Add user",
       link: "adduser",
       isActive: false,
+      isSuperAdmin : true
     },
-    // {
-    //   icon: <Pencil />,
-    //   menuItemText: "Edit User",
-    //   link: "edituser",
-    //   isActive: false,
-    // },
+    {
+      icon: <Pencil />,
+      menuItemText: "Add Company",
+      link: "addcompany",
+      isActive: false,
+      isSuperAdmin : auth.role === "superAdmin"
+    },
     // {
     //   icon: <Settings />,
     //   menuItemText: "Settings",
@@ -56,6 +61,7 @@ const MenuList = () => {
           link={item.link}
           isActive={item.isActive}
           onClick={() => handleItemClick(index)}
+          isSuperAdmin={item.isSuperAdmin}
         />
       ))}
     </ul>

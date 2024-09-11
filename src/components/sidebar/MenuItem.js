@@ -1,9 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const MenuItem = ({ icon, menuItemText, link, isActive, onClick }) => {
+const MenuItem = ({
+  icon,
+  menuItemText,
+  link,
+  isActive,
+  onClick,
+  isSuperAdmin,
+}) => {
+  console.log(isSuperAdmin);
   return (
-    <Link to={`/${link}`}>
+    <Link className={`${!isSuperAdmin && `hidden`}`} to={`/${link}`}>
       <li
         onClick={onClick}
         className={`flex items-center justify-center lg:justify-normal text-gray-600 px-5 py-3 duration-500 hover:bg-violet-950 ${

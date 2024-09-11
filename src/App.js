@@ -8,14 +8,14 @@ import Settings from "./components/content/Settings";
 import User from "./components/content/User";
 import Login from "./components/content/Login";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CompanyForm from "./components/content/CompanyForm";
 
 function App() {
   const auth = useSelector((state) => state.auth);
 
-  console.log(auth);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,21 +24,21 @@ function App() {
     }
   }, [auth, navigate]);
 
+  const isSuperAdmin = auth.token && auth.role === "superAdmin";
+  const isAdmin = auth.token && auth.role === "yathAdmin";
+
   return (
     <div className="App font-mont">
       <Routes>
         {/* Public Routes */}
         <Route path="login" element={<Login />} />
         <Route path="download-contact/:userId" element={<User />} />
-        {/* Protected Routes */}
-        <Route
-          path="dashboard/users/:userId"
-          element={auth.token ? <User /> : <Navigate to="/login" />}
-        />
+
+        {/* Protected Routes for SuperAdmin and Admin */}
         <Route
           path="/"
           element={
-            auth.token && auth.role === "admin" ? (
+            isSuperAdmin || isAdmin ? (
               <Content />
             ) : (
               <Navigate to="/login" replace />
@@ -46,9 +46,20 @@ function App() {
           }>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="adduser" element={<AddUser />} />
-          <Route path="edituser" element={<EditUser />} />
+          <Route path="edituser/:userId" element={<EditUser />} />
           <Route path="settings" element={<Settings />} />
+
+          {/* SuperAdmin exclusive route */}
+          {isSuperAdmin && (
+            <Route path="addcompany" element={<CompanyForm />} />
+          )}
         </Route>
+
+        {/* Route accessible for specific user roles */}
+        <Route
+          path="dashboard/users/:userId"
+          element={auth.token ? <User /> : <Navigate to="/login" />}
+        />
 
         {/* Redirect all other unmatched routes to login */}
         <Route path="*" element={<Navigate to="/login" />} />

@@ -22,18 +22,15 @@ import {
 } from "../ui/select.jsx";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 
 const Form = () => {
+  const auth = useSelector((state) => state.auth);
+
   let formData = new FormData();
   const Schema = Yup.object().shape({
-    firstname: Yup.string()
-      .min(6, "Too Short!")
-      .max(50, "Too Long!")
-      .required("First Name is required"),
-    lastname: Yup.string()
-      .min(6, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Last Name is required"),
+    firstname: Yup.string().required("First Name is required"),
+    lastname: Yup.string().required("Last Name is required"),
     phone: Yup.string()
       .matches(
         /^(0)\d{10}$/,
@@ -75,7 +72,7 @@ const Form = () => {
     initialValues: {
       firstname: "",
       lastname: "",
-      password : "",
+      password: "",
       phone: "",
       companyName: "",
       position: "",
@@ -128,6 +125,7 @@ const Form = () => {
         .post("https://tasktrial.vercel.app/setUser", formData, {
           headers: {
             "Content-Type": `multipart/form-data`,
+            Authorization: auth.token,
           },
         })
         .then(function (response) {
@@ -243,7 +241,7 @@ const Form = () => {
               </p>
             </div>
             <div className="mb-2">
-              <Label htmlFor="cname">Postal Code</Label>
+              <Label htmlFor="cname">companyName</Label>
               <Input
                 type="text"
                 id="cname"

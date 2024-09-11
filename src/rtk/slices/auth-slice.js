@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import { Bounce, toast } from "react-toastify";
 
 export const login = createAsyncThunk("auth/login", async (data, thunkAPI) => {
+
   const { rejectWithValue } = thunkAPI;
   try {
     const response = await axios.post(
@@ -21,6 +22,9 @@ export const login = createAsyncThunk("auth/login", async (data, thunkAPI) => {
       theme: "light",
       transition: Bounce,
     });
+    const token = localStorage.setItem("token" , response.data.token)
+    const role = localStorage.setItem("role" , response.data.role)
+
     return response.data;
   } catch (error) {
     toast.error(error.response.data.message || "Login Failed", {

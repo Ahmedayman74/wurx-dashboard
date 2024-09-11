@@ -22,7 +22,7 @@ const User = () => {
       .get(`https://tasktrial.vercel.app/getUser/${params.userId}`)
       .then(function (response) {
         setUser(response.data);
-        console.log(response.data);
+        console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -30,7 +30,7 @@ const User = () => {
   }, [params.userId]);
 
   const convertUserToVCard = (user) => {
-    const firstName = user.fisrtname || "";
+    const firstName = user.firstname || "";
     const lastName = user.lastName || "";
 
     return `BEGIN:VCARD
@@ -63,7 +63,7 @@ END:VCARD`;
   const handleDownloadContact = () => {
     const vCard = convertUserToVCard(user);
     const fileName = `${
-      user.fisrtname ? user.fisrtname.replace(/ /g, "_") : "contact"
+      user.firstname ? user.firstname.replace(/ /g, "_") : "contact"
     }.vcf`;
     triggerDownload(vCard, fileName);
   };
@@ -72,12 +72,12 @@ END:VCARD`;
     if (
       !downloadTriggered &&
       window.location.pathname.includes("/download-contact") &&
-      user.fisrtname
+      user.firstname
     ) {
       setDownloadTriggered(true);
       const vCard = convertUserToVCard(user);
       const fileName = `${
-        user.fisrtname ? user.fisrtname.replace(/ /g, "_") : "contact"
+        user.firstname ? user.firstname.replace(/ /g, "_") : "contact"
       }.vcf`;
       triggerDownload(vCard, fileName);
     }
@@ -87,9 +87,9 @@ END:VCARD`;
     <div className="flex flex-col items-center justify-center bg-[#eee]">
       <div className="relative container px-10 md:max-w-lg bg-white">
         <ModalImage
-          className="w-full py-5 "
-          small={require("../../imgs/WhatsApp Image 2024-08-14 at 16.43.53_42e78109 1.png")}
-          large={require("../../imgs/WhatsApp Image 2024-08-14 at 16.43.53_42e78109 1.png")}
+          className="w-full py-5 rounded-lg "
+          small={user.cover}
+          large={user.cover}
           alt="Bussines Card"
         />
         <div className="pb-10">
@@ -106,7 +106,7 @@ END:VCARD`;
               <div>
                 <p className="text-indigo-950 font-extrabold">Name</p>
                 <h1 className=" text-indigo-950 capitalize   text-lg">
-                  {user.fisrtname + user.lastname}
+                  {user.firstname + user.lastname}
                 </h1>
               </div>
               <div className="mt-3">
