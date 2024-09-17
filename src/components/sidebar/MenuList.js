@@ -7,23 +7,16 @@ const MenuList = () => {
   const auth = useSelector((state) => state.auth);
   const [menuItems, setMenuItems] = useState([
     {
-      icon: <PieChart />,
-      menuItemText: "Dashboard",
+      icon: <User />,
+      menuItemText: "Users",
       link: "dashboard",
       isActive: false,
       isSuperAdmin : true
     },
     {
-      icon: <User />,
-      menuItemText: "Add user",
-      link: "adduser",
-      isActive: false,
-      isSuperAdmin : true
-    },
-    {
       icon: <Pencil />,
-      menuItemText: "Add Company",
-      link: "addcompany",
+      menuItemText: "Companies",
+      link: "companies",
       isActive: false,
       isSuperAdmin : auth.role === "superAdmin"
     },

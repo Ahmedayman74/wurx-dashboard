@@ -85,28 +85,28 @@ END:VCARD`;
 
   return (
     <div className="flex flex-col items-center justify-center bg-[#eee]">
-      <div className="relative container px-10 md:max-w-lg bg-white">
+      <div className="relative md:max-w-lg bg-white">
         <ModalImage
-          className="w-full py-5 rounded-lg "
+          className="w-full h-[220px] object-cover"
           small={user.cover}
           large={user.cover}
           alt="Bussines Card"
         />
-        <div className="pb-10">
-          <div className="flex items-center justify-between">
-            <img className="w-32 h-32 rounded-xl" alt="" src={user.avatar} />
+        <div className="pb-10 container px-10">
+          <div className="flex  justify-between">
             <img
-              className="w-32 h-32 "
+              className="w-32 h-32 rounded-xl -mt-16 border-white border-[5px]"
               alt=""
-              src={require("../../imgs/image 4 (3).png")}
+              src={user.avatar}
             />
           </div>
-          <div className="flex justify-between gap-10 mt-10">
+          <div className="flex justify-between gap-10 mt-5">
             <div>
               <div>
                 <p className="text-indigo-950 font-extrabold">Name</p>
-                <h1 className=" text-indigo-950 capitalize   text-lg">
-                  {user.firstname + user.lastname}
+                <h1 className=" text-indigo-950 capitalize text-lg flex items-center gap-1">
+                  <span>{user.firstname}</span>
+                  <span>{user.lastname}</span>
                 </h1>
               </div>
               <div className="mt-3">
@@ -124,7 +124,7 @@ END:VCARD`;
               </div>
 
               <div className="mt-3">
-                <p className="text-indigo-950 font-extrabold">Postal Code</p>
+                <p className="text-indigo-950 font-extrabold">Company Name</p>
                 <p className="mt-1 text-indigo-950 capitalize  text-lg">
                   {user.companyName}
                 </p>
@@ -145,29 +145,31 @@ END:VCARD`;
               viewBox={`0 0 130 130`}
             />
           </div>
-          <div className="flex items-center justify-center gap-5 mt-10">
-            <button
-              className="bg-[#AF0A81] w-full text-white px-5 py-2 rounded-sm flex justify-center items-center gap-4"
-              onClick={handleDownloadContact}>
-              <span>
-                <ArrowDown />
-              </span>
-              <span>Download Contact</span>
-            </button>
-          </div>
+          <div className="flex items-center flex-wrap sm:flex-nowrap gap-5">
+            <div className="flex items-center justify-center gap-2 w-full sm:w-fit">
+              <button
+                className="bg-[#AF0A81] w-full text-white px-5 py-2 rounded-sm flex justify-center items-center gap-4"
+                onClick={handleDownloadContact}>
+                <span>
+                  <ArrowDown />
+                </span>
+                <span>Add Contact</span>
+              </button>
+            </div>
 
-          <div className="flex items-center justify-center gap-5 py-5">
-            <a
-              target="blank"
-              href={
-                "https://www.google.com/maps/@31.2118627,29.9393604,15z?entry=ttu"
-              }
-              className="bg-indigo-950 w-full text-white px-5 py-2 rounded-sm flex justify-center items-center gap-4">
-              <span>
-                <MapPin />
-              </span>
-              <span>Open Maps</span>
-            </a>
+            <div className="flex items-center justify-center gap-2 w-full sm:w-fit">
+              <a
+                target="blank"
+                href={
+                  "https://www.google.com/maps/@31.2118627,29.9393604,15z?entry=ttu"
+                }
+                className="bg-indigo-950 w-full text-white px-5 py-2 rounded-sm flex justify-center items-center gap-4">
+                <span>
+                  <MapPin />
+                </span>
+                <span>Open Address</span>
+              </a>
+            </div>
           </div>
           <div className=" mt-5 flex items-center justify-center gap-4">
             <a target="blank" href={user.facebook}>

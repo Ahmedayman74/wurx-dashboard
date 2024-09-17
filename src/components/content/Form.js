@@ -119,8 +119,6 @@ const Form = () => {
       formData.append("instagram", instagram);
       formData.append("linkedIn", linkedIn);
       formData.append("languages", languages);
-      console.log(formData);
-      console.log(formData.get("cover"));
       axios
         .post("https://tasktrial.vercel.app/setUser", formData, {
           headers: {
@@ -160,8 +158,9 @@ const Form = () => {
     },
   });
   return (
-    <div className=" right">
+    <div className="bg-white p-10 rounded-lg">
       <form onSubmit={formik.handleSubmit}>
+        <h1 className="font-bold pb-3 text-xl">Personal information</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           <div>
             <div className="mb-2">
@@ -251,19 +250,6 @@ const Form = () => {
                 onBlur={formik.handleBlur}
               />
             </div>
-            <div className="mb-2">
-              <Label htmlFor="img">Avatar</Label>
-              <Input
-                type="file"
-                id="img"
-                name="avatar"
-                onChange={(e) => {
-                  formik.setFieldValue("avatar", e.currentTarget.files[0]); // Update "cover" instead of "avatar"
-                }}
-                value={null}
-                onBlur={formik.handleBlur}
-              />
-            </div>
           </div>
           <div>
             <div className="mb-2">
@@ -328,52 +314,20 @@ const Form = () => {
                 ) : null}
               </p>
             </div>
-            {/* <div className="mb-2">
-              <Label>Working Hours</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-[280px] justify-start text-left font-normal text-muted-foreground"
-                    )}>
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {formik.values.date ? (
-                      format(formik.values.date, "PPP")
-                    ) : (
-                      <span>Pick a date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={formik.values.date}
-                    onSelect={(date) => {
-                      formik.setFieldValue("date", date);
-                    }}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div> */}
           </div>
           <div>
             <div className="mb-2">
-              <Label htmlFor="name">languages</Label>
-              <Select
-                onValueChange={(value) => {
-                  formik.setFieldValue("languages", value);
+              <Label htmlFor="img">Profille Picture</Label>
+              <Input
+                type="file"
+                id="img"
+                name="avatar"
+                onChange={(e) => {
+                  formik.setFieldValue("avatar", e.currentTarget.files[0]); // Update "cover" instead of "avatar"
                 }}
-                value={formik.values.languages}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select language" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Arabic">Arabic</SelectItem>
-                  <SelectItem value="English">English</SelectItem>
-                </SelectContent>
-              </Select>
+                value={null}
+                onBlur={formik.handleBlur}
+              />
             </div>
             <div className="mb-2">
               <Label htmlFor="img">Cover</Label>
@@ -388,7 +342,10 @@ const Form = () => {
               />
             </div>
           </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-5">
           <div>
+            <h1 className="font-bold pb-3 text-xl">Social Media information</h1>
             <div className="mb-2">
               <Label htmlFor="facebook">Facebook</Label>
               <Input
@@ -463,7 +420,7 @@ const Form = () => {
             </div>
           </div>
         </div>
-        <Button className="mt-4" type="submit">
+        <Button className="mt-4 bg-[#cb5bc3]" type="submit">
           Publish
         </Button>
       </form>

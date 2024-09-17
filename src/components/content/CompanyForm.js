@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
 
 const CompanyForm = () => {
+  const formData = new FormData();
   const auth = useSelector((state) => state.auth);
   const Schema = Yup.object().shape({
     password: Yup.string()
@@ -24,30 +25,73 @@ const CompanyForm = () => {
       password: "",
       companyName: "",
       email: "",
+      logo: "",
     },
     validationSchema: Schema,
-    onSubmit: ({ password, companyName, email, employeeLimit }) => {
-      console.log(employeeLimit , password , companyName , email)
+    onSubmit: ({ password, companyName, email, employeeLimit, logo }) => {
+      //   console.log(employeeLimit, password, companyName, email);
+      //   axios
+      //     .post(
+      //       "https://tasktrial.onrender.com/createCompanyAdmin",
+      //       {
+      //         email,
+      //         password,
+      //         companyName,
+      //         employeeLimit,
+      //       },
+      //       {
+      //         headers: {
+      //           "Content-Type": `application/json`,
+      //           Authorization: auth.token,
+      //         },
+      //       }
+      //     )
+      //     .then(function (response) {
+      //       console.log(response);
+      //       formik.resetForm();
+      //       toast.success("User Successfully Added", {
+      //         position: "bottom-right",
+      //         autoClose: 5000,
+      //         hideProgressBar: false,
+      //         closeOnClick: true,
+      //         pauseOnHover: false,
+      //         draggable: true,
+      //         progress: undefined,
+      //         theme: "light",
+      //         transition: Bounce,
+      //       });
+      //     })
+      //     .catch(function (error) {
+      //       console.log(error.response.data.message);
+      //       toast.error(error.response.data.message, {
+      //         position: "bottom-right",
+      //         autoClose: 5000,
+      //         hideProgressBar: false,
+      //         closeOnClick: true,
+      //         pauseOnHover: false,
+      //         draggable: true,
+      //         progress: undefined,
+      //         theme: "light",
+      //         transition: Bounce,
+      //       });
+      //     });
+      // },
+
+      formData.append("password", password);
+      formData.append("companyName", companyName);
+      formData.append("email", email);
+      formData.append("logo", logo);
+      formData.append("employeeLimit", employeeLimit);
       axios
-        .post(
-          "https://tasktrial.onrender.com/createCompanyAdmin",
-          {
-            email,
-            password,
-            companyName,
-            employeeLimit
+        .post("https://tasktrial.onrender.com/createCompanyAdmin", formData, {
+          headers: {
+            "Content-Type": `multipart/form-data`,
+            Authorization: auth.token,
           },
-          {
-            headers: {
-              "Content-Type": `application/json`,
-              "Authorization": auth.token
-            },
-          }
-        )
+        })
         .then(function (response) {
-          console.log(response);
           formik.resetForm();
-          toast.success("User Successfully Added", {
+          toast.success(`${response.data.company.name} Successfully Added`, {
             position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -76,7 +120,7 @@ const CompanyForm = () => {
     },
   });
   return (
-    <div className=" right">
+    <div className="bg-white rounded-lg p-10">
       <form onSubmit={formik.handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           <div>
@@ -145,9 +189,23 @@ const CompanyForm = () => {
                 onBlur={formik.handleBlur}
               />
             </div>
+
+            <div className="mb-2">
+              <Label htmlFor="img">Logo</Label>
+              <Input
+                type="file"
+                id="img"
+                name=""
+                onChange={(e) => {
+                  formik.setFieldValue("logo", e.currentTarget.files[0]); // Update "cover" instead of "avatar"
+                }}
+                value={null}
+                onBlur={formik.handleBlur}
+              />
+            </div>
           </div>
         </div>
-        <Button className="mt-4" type="submit">
+        <Button className="mt-4 bg-[#cb5bc3]" type="submit">
           Publish
         </Button>
       </form>

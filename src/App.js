@@ -12,11 +12,13 @@ import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CompanyForm from "./components/content/CompanyForm";
+import Companies from "./components/content/Companies";
 
 function App() {
   const auth = useSelector((state) => state.auth);
-
   const navigate = useNavigate();
+
+  console.log(auth)
 
   useEffect(() => {
     if (auth.token && auth.role === "employee") {
@@ -25,7 +27,7 @@ function App() {
   }, [auth, navigate]);
 
   const isSuperAdmin = auth.token && auth.role === "superAdmin";
-  const isAdmin = auth.token && auth.role === "yathAdmin";
+  const isAdmin = auth.token && auth.role === "Admin";
 
   return (
     <div className="App font-mont">
@@ -45,13 +47,16 @@ function App() {
             )
           }>
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="adduser" element={<AddUser />} />
+          <Route path="user" element={<AddUser />} />
           <Route path="edituser/:userId" element={<EditUser />} />
           <Route path="settings" element={<Settings />} />
 
           {/* SuperAdmin exclusive route */}
           {isSuperAdmin && (
-            <Route path="addcompany" element={<CompanyForm />} />
+            <Route path="companies" element={<Companies />} />
+          )}
+          {isSuperAdmin && (
+            <Route path="company" element={<CompanyForm />} />
           )}
         </Route>
 
