@@ -1,25 +1,18 @@
 import React from "react";
 import { Bounce, toast, ToastContainer } from "react-toastify";
-import { Label } from "../ui/label";
+import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
-const CompanyForm = () => {
-  const formData = new FormData();
-  // const auth = useSelector((state) => state.auth);
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
-  const Schema = Yup.object().shape({
-    password: Yup.string()
-      .min(6, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Password is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-  });
+const EditCompanies = () => {
+  const token = localStorage.getItem("token")
+  const role = localStorage.getItem("role")
+  const params = useParams();
 
   const formik = useFormik({
     initialValues: {
@@ -27,70 +20,32 @@ const CompanyForm = () => {
       password: "",
       companyName: "",
       email: "",
-      logo: "",
     },
-    validationSchema: Schema,
-    onSubmit: ({ password, companyName, email, employeeLimit, logo }) => {
-      //   console.log(employeeLimit, password, companyName, email);
-      //   axios
-      //     .post(
-      //       "https://tasktrial.onrender.com/createCompanyAdmin",
-      //       {
-      //         email,
-      //         password,
-      //         companyName,
-      //         employeeLimit,
-      //       },
-      //       {
-      //         headers: {
-      //           "Content-Type": `application/json`,
-      //           Authorization: auth.token,
-      //         },
-      //       }
-      //     )
-      //     .then(function (response) {
-      //       console.log(response);
-      //       formik.resetForm();
-      //       toast.success("User Successfully Added", {
-      //         position: "bottom-right",
-      //         autoClose: 5000,
-      //         hideProgressBar: false,
-      //         closeOnClick: true,
-      //         pauseOnHover: false,
-      //         draggable: true,
-      //         progress: undefined,
-      //         theme: "light",
-      //         transition: Bounce,
-      //       });
-      //     })
-      //     .catch(function (error) {
-      //       console.log(error.response.data.message);
-      //       toast.error(error.response.data.message, {
-      //         position: "bottom-right",
-      //         autoClose: 5000,
-      //         hideProgressBar: false,
-      //         closeOnClick: true,
-      //         pauseOnHover: false,
-      //         draggable: true,
-      //         progress: undefined,
-      //         theme: "light",
-      //         transition: Bounce,
-      //       });
-      //     });
-      // },
+    onSubmit: ({ password, companyName, email, employeeLimit }) => {
+      const editObj = new Object();
 
-      formData.append("password", password);
-      formData.append("companyName", companyName);
-      formData.append("email", email);
-      formData.append("logo", logo);
-      formData.append("employeeLimit", employeeLimit);
+      if (companyName !== "") {
+        editObj.companyName = companyName;
+      }
+      if (employeeLimit !== "") {
+        editObj.employeeLimit = employeeLimit;
+      }
+      if (password !== "") {
+        editObj.password = password;
+      }
+      if (email !== "") {
+        editObj.email = email;
+      }
       axios
-        .post("https://tasktrial.onrender.com/createCompanyAdmin", formData, {
-          headers: {
-            "Content-Type": `multipart/form-data`,
-            Authorization: token,
-          },
-        })
+        .patch(
+          `https://tasktrial.vercel.app/updateCompany/${params.id}`,
+          editObj ,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        )
         .then(function (response) {
           formik.resetForm();
           toast.success(`${response.data.company.name} Successfully Added`, {
@@ -192,7 +147,7 @@ const CompanyForm = () => {
               />
             </div>
 
-            <div className="mb-2">
+            {/* <div className="mb-2">
               <Label htmlFor="img">Logo</Label>
               <Input
                 type="file"
@@ -204,12 +159,10 @@ const CompanyForm = () => {
                 value={null}
                 onBlur={formik.handleBlur}
               />
-            </div>
+            </div> */}
           </div>
         </div>
-        <Button
-          className="mt-4 bg-[#2e1065] hover:bg-[#00A4FF] duration-500"
-          type="submit">
+        <Button className="mt-4 bg-[#2e1065] hover:bg-[#00A4FF] duration-500" type="submit">
           Publish
         </Button>
       </form>
@@ -230,4 +183,4 @@ const CompanyForm = () => {
   );
 };
 
-export default CompanyForm;
+export default EditCompanies;

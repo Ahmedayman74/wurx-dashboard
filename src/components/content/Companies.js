@@ -24,12 +24,18 @@ import {
 import { SelectValue } from "@radix-ui/react-select";
 import { ClipLoader, FadeLoader } from "react-spinners";
 import logoimg from "../../imgs/logo (1).png";
+import { toast } from "react-toastify";
+import { confirmAlert } from "react-confirm-alert";
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 const Companies = () => {
-  const token = useSelector((state) => state.auth.token);
+  // const token = useSelector((state) => state.auth.token);
+  const token = localStorage.getItem("token");
+  // const role = localStorage.getItem("role")
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchFilter, setSearchFilter] = useState("");
+  const [isRefresh, setIsRefresh] = useState(false);
   useEffect(() => {
     axios
       .get("https://tasktrial.vercel.app/allCompanies", {
@@ -44,19 +50,41 @@ const Companies = () => {
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  }, [isRefresh, token]);
 
   console.log(companies);
 
-  const handleDeleteUser = (id) => {
-    axios
-      .delete(`https://tasktrial.vercel.app/deleteUser/${id}`)
-      .then((response) => {
-        console.log(`Deleted post with ID ${id}`);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const handleDeleteCompany = (id , name) => {
+    confirmAlert({
+      title: `Confirm to Delete ${name}`,
+      message: `Are you sure you want delete ${name}?`,
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            axios
+              .delete(`https://tasktrial.vercel.app/deleteCompany/${id}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then((response) => {
+                setIsRefresh((prev) => !prev); // Toggle refresh to trigger re-fetching companies
+                console.log(`Deleted company with ID ${id}`);
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+            toast.success(`${name} Deleted successfully!`);
+            // navigate('/login');
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
   };
 
   const handleSearch = (value) => {
@@ -66,54 +94,69 @@ const Companies = () => {
   const companiesData = searchFilter
     ? companies
         .filter((x) => x.name.includes(searchFilter))
-        .map(({ _id, name, logo }) => {
+        .map(({ _id, name, logo, adminDetails }) => {
           return (
             <TableRow>
               <TableCell className="font-medium">{name}</TableCell>
-              <TableCell>13</TableCell>
-              <TableCell>yath@gmail.com</TableCell>
+              {adminDetails.map(({ employeeLimit, email }) => {
+                return (
+                  <>
+                    <TableCell>{employeeLimit}</TableCell>
+                    <TableCell>{email}</TableCell>
+                  </>
+                );
+              })}
+
               <img
                 className="w-10 h-10 object-contain rounded-full"
-                src={`https://tasktrial.vercel.app/getImage/${logo}`}
+                src={logo}
                 alt="logo"></img>
               <TableCell>
-                <button
-                  onClick={() => handleDeleteUser(_id)}
-                  className="rounded-lg text-red-600  px-5 py-2">
-                  Delete
-                </button>
-
-                <button
-                  onClick={() => handleDeleteUser(_id)}
-                  className="rounded-lg text-green-600  px-5 py-2">
-                  Edit
-                </button>
+                <div className="flex items-center justify-center">
+                  <button
+                    onClick={() => handleDeleteCompany(_id , name)}
+                    className="rounded-lg text-red-600  px-5 py-2">
+                    Delete
+                  </button>
+                  <Link
+                    to={`/companies/edit/${_id}`}
+                    className="rounded-lg text-green-600  px-5 py-2">
+                    Edit
+                  </Link>
+                </div>
               </TableCell>
             </TableRow>
           );
         })
-    : companies.map(({ _id, name, logo }) => {
+    : companies.map(({ _id, name, logo, adminDetails }) => {
         return (
           <TableRow>
             <TableCell className="font-medium">{name}</TableCell>
-            <TableCell>13</TableCell>
-            <TableCell>yath@gmail.com</TableCell>
+            {adminDetails.map(({ employeeLimit, email }) => {
+              return (
+                <>
+                  <TableCell>{employeeLimit}</TableCell>
+                  <TableCell>{email}</TableCell>
+                </>
+              );
+            })}
+
             <img
               className="w-10 h-10 object-contain rounded-full"
-              src={`https://tasktrial.vercel.app/getLogo/${logo}`}
+              src={logo}
               alt="logo"></img>
             <TableCell>
               <div className="flex items-center justify-center">
                 <button
-                  onClick={() => handleDeleteUser(_id)}
+                  onClick={() => handleDeleteCompany(_id , name)}
                   className="rounded-lg text-red-600  px-5 py-2">
                   Delete
                 </button>
-                <button
-                  onClick={() => handleDeleteUser(_id)}
+                <Link
+                  to={`/companies/edit/${_id}`}
                   className="rounded-lg text-green-600  px-5 py-2">
                   Edit
-                </button>
+                </Link>
               </div>
             </TableCell>
           </TableRow>
@@ -123,7 +166,7 @@ const Companies = () => {
     return (
       <div className="flex items-center justify-center h-screen">
         <FadeLoader
-          color={"#CB5BC3"}
+          color={"#00A4FF"}
           loading={loading}
           size={50}
           aria-label="Loading Spinner"
@@ -141,7 +184,7 @@ const Companies = () => {
         />
         <Link
           to={"/company"}
-          className="bg-[#CB5BC3] py-2 h-9 px-10 rounded-md text-white w-full md:w-1/2 text-center">
+          className="bg-[#2e1065] hover:bg-[#00A4FF] duration-500 py-2 h-9 px-10 rounded-md text-white w-full md:w-1/2 text-center">
           Add New Company
         </Link>
       </div>

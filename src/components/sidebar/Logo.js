@@ -2,7 +2,7 @@
 
 const Logo = ({img}) => {
   return (
-    <img className="w-32  lg:w-20" src={img} alt="" />
+    <img className="w-32" src={img} alt="" />
   )
 }
 

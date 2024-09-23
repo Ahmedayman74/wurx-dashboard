@@ -4,7 +4,9 @@ import MenuItem from "./MenuItem";
 import { useSelector } from "react-redux";
 
 const MenuList = () => {
-  const auth = useSelector((state) => state.auth);
+  // const auth = useSelector((state) => state.auth);
+  const token = localStorage.getItem("token")
+  const role = localStorage.getItem("role")
   const [menuItems, setMenuItems] = useState([
     {
       icon: <User />,
@@ -18,7 +20,7 @@ const MenuList = () => {
       menuItemText: "Companies",
       link: "companies",
       isActive: false,
-      isSuperAdmin : auth.role === "superAdmin"
+      isSuperAdmin : role === "superAdmin"
     },
     // {
     //   icon: <Settings />,

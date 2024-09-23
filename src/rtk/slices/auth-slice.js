@@ -22,8 +22,8 @@ export const login = createAsyncThunk("auth/login", async (data, thunkAPI) => {
       theme: "light",
       transition: Bounce,
     });
-    const token = localStorage.setItem("token" , response.data.token)
-    const role = localStorage.setItem("role" , response.data.role)
+     localStorage.setItem("token" , response.data.token)
+     localStorage.setItem("role" , response.data.role)
 
     return response.data;
   } catch (error) {

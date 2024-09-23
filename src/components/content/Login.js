@@ -44,11 +44,11 @@ const Login = () => {
   });
 
   return (
-    <div className="flex items-center justify-center h-screen px-10">
-      <div className="flex flex-col items-center justify-center w-full max-w-md  ">
+    <div className="flex items-center justify-center h-screen px-10 bg-[#eee]">
+      <div className="flex flex-col items-center justify-center w-full max-w-md bg-white py-20 px-10 rounded-md  ">
         <img
           className="w-40 mb-6"
-          src={require("../../imgs/logo (1).png")}
+          src={require("../../imgs/logo-wuccccrx-cart.png")}
           alt="Logo"
         />
         <form className="w-full" onSubmit={formik.handleSubmit}>
@@ -89,7 +89,7 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="w-full py-2 mt-4 text-white bg-[#330066] rounded-full duration-500 hover:bg-[#E374DA]">
+            className="w-full py-2 mt-4 text-white bg-[#2e1065] hover:bg-[#00A4FF] duration-500 rounded-full">
             Login
           </button>
         </form>

@@ -25,8 +25,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 
 const Form = () => {
-  const auth = useSelector((state) => state.auth);
-
+  // const auth = useSelector((state) => state.auth);
+  const token = localStorage.getItem("token")
+  // const role = localStorage.getItem("role")
   let formData = new FormData();
   const Schema = Yup.object().shape({
     firstname: Yup.string().required("First Name is required"),
@@ -41,6 +42,7 @@ const Form = () => {
       .min(6, "Too Short!")
       .max(50, "Too Long!")
       .required("Password is required"),
+    companyName: Yup.string().required("Company Name is required"),
     position: Yup.string()
       .min(6, "Too Short!")
       .max(50, "Too Long!")
@@ -123,7 +125,7 @@ const Form = () => {
         .post("https://tasktrial.vercel.app/setUser", formData, {
           headers: {
             "Content-Type": `multipart/form-data`,
-            Authorization: auth.token,
+            Authorization: token,
           },
         })
         .then(function (response) {
@@ -201,22 +203,27 @@ const Form = () => {
               </p>
             </div>
             <div className="mb-2">
-              <Label htmlFor="password">Password *</Label>
-              <Input
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                onBlur={formik.handleBlur}
-                type="password"
-                id="password"
-                name="password"
-              />
-              <p>
-                {formik.errors.password && formik.touched.password ? (
-                  <p className=" text-red-500 text-xs my-1">
-                    {formik.errors.password}
-                  </p>
-                ) : null}
-              </p>
+              <div>
+                <Label htmlFor="password">Password *</Label>
+                <Input
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  onBlur={formik.handleBlur}
+                  type="password"
+                  id="password"
+                  name="password"
+                />
+                <p>
+                  {formik.errors.password && formik.touched.password ? (
+                    <p className=" text-red-500 text-xs my-1">
+                      {formik.errors.password}
+                    </p>
+                  ) : null}
+                </p>
+              </div>
+              {/* <Button type="button" onClick={() => {
+                console.log("random password")
+              }}>genrate password</Button> */}
             </div>
             <div className="mb-2">
               <Label htmlFor="phone">Phone *</Label>
@@ -240,7 +247,7 @@ const Form = () => {
               </p>
             </div>
             <div className="mb-2">
-              <Label htmlFor="cname">companyName</Label>
+              <Label htmlFor="cname">companyName *</Label>
               <Input
                 type="text"
                 id="cname"
@@ -249,6 +256,13 @@ const Form = () => {
                 value={formik.values.companyName}
                 onBlur={formik.handleBlur}
               />
+              <p>
+                {formik.errors.companyName && formik.touched.companyName ? (
+                  <p className=" text-red-500 text-xs my-1">
+                    {formik.errors.companyName}
+                  </p>
+                ) : null}
+              </p>
             </div>
           </div>
           <div>
@@ -420,7 +434,7 @@ const Form = () => {
             </div>
           </div>
         </div>
-        <Button className="mt-4 bg-[#cb5bc3]" type="submit">
+        <Button className="mt-4 bg-[#2e1065] hover:bg-[#00A4FF] duration-500" type="submit">
           Publish
         </Button>
       </form>

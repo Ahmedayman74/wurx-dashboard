@@ -84,7 +84,7 @@ END:VCARD`;
   }, [user, downloadTriggered]);
 
   return (
-    <div className="flex flex-col items-center justify-center bg-[#eee]">
+    <div className="flex flex-col items-center justify-center bg-[#eee] h-screen">
       <div className="relative md:max-w-lg bg-white">
         <ModalImage
           className="w-full h-[220px] object-cover"
