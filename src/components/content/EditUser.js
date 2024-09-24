@@ -32,13 +32,33 @@ const EditUser = () => {
     initialValues: {
       firstname: user?.firstname || "", // Set initial value from user object or empty string if not loaded yet
       lastname: user?.lastname || "",
-      password: user?.password || "",
+      password: "",
       phone: user?.phone || "",
       position: user?.position || "",
       email: user?.email || "",
     },
-    onSubmit: (values) => {
-      const editObj = { ...values };
+    onSubmit: ({firstname, lastname, password, phone, position, email}) => {
+      const editObj = {};
+      if (firstname) {
+        editObj.firstname = firstname;
+      }
+      if (lastname) {
+        editObj.lastname = lastname;
+      }
+      if (password) {
+        editObj.password = password;
+      }
+      if (phone) {
+        editObj.phone = phone;
+      }
+      if (position) {
+        editObj.position = position;
+      }
+      if (email) {
+        editObj.email = email;
+      }
+
+      // console.log(editObj)
       axios
         .put(`https://tasktrial.vercel.app/updateUser/${params.id}`, editObj, {
           headers: {

@@ -1,26 +1,29 @@
 import React, { useState } from "react";
-import { Pencil, PieChart, Settings, User } from "lucide-react";
+import { Building, User } from "lucide-react";
 import MenuItem from "./MenuItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleSidebar } from "../../rtk/slices/sidebar-slice";
 
 const MenuList = () => {
   // const auth = useSelector((state) => state.auth);
-  const token = localStorage.getItem("token")
-  const role = localStorage.getItem("role")
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+  const dispatch = useDispatch();
+  const sidebartoggle = useSelector((state) => state.sidebar.isOpen);
   const [menuItems, setMenuItems] = useState([
     {
       icon: <User />,
       menuItemText: "Users",
       link: "dashboard",
-      isActive: false,
-      isSuperAdmin : true
+      isActive: true,
+      isSuperAdmin: true,
     },
     {
-      icon: <Pencil />,
+      icon: <Building />,
       menuItemText: "Companies",
       link: "companies",
       isActive: false,
-      isSuperAdmin : role === "superAdmin"
+      isSuperAdmin: role === "superAdmin",
     },
     // {
     //   icon: <Settings />,
@@ -33,7 +36,6 @@ const MenuList = () => {
   const handleItemClick = (index) => {
     // Create a copy of the menu items array
     const updatedItems = [...menuItems];
-
     // Reset all items to inactive
     updatedItems.forEach((item, i) => {
       updatedItems[i].isActive = false;
@@ -44,6 +46,8 @@ const MenuList = () => {
 
     // Update state with the modified array
     setMenuItems(updatedItems);
+
+    sidebartoggle && dispatch(toggleSidebar());
   };
 
   return (
@@ -64,4 +68,3 @@ const MenuList = () => {
 };
 
 export default MenuList;
-

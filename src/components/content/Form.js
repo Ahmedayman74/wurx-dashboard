@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "../ui/input.jsx";
 import { Label } from "../ui/label.jsx";
 import Inputs from "./Inputs.js";
@@ -26,8 +26,26 @@ import { useSelector } from "react-redux";
 
 const Form = () => {
   // const auth = useSelector((state) => state.auth);
-  const token = localStorage.getItem("token")
-  // const role = localStorage.getItem("role")
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("https://tasktrial.vercel.app/allUsers", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(function (response) {
+        setUsers(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [users, token]);
+
+  console.log();
   let formData = new FormData();
   const Schema = Yup.object().shape({
     firstname: Yup.string().required("First Name is required"),
@@ -71,12 +89,13 @@ const Form = () => {
   });
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
       firstname: "",
       lastname: "",
       password: "",
       phone: "",
-      companyName: "",
+      companyName: role === "Admin" ? users[0]?.companyName : "",
       position: "",
       email: "",
       website: "",
@@ -255,6 +274,7 @@ const Form = () => {
                 onChange={formik.handleChange}
                 value={formik.values.companyName}
                 onBlur={formik.handleBlur}
+                disabled={role === "Admin" && users.length !== 0 ? true : false}
               />
               <p>
                 {formik.errors.companyName && formik.touched.companyName ? (
@@ -434,7 +454,9 @@ const Form = () => {
             </div>
           </div>
         </div>
-        <Button className="mt-4 bg-[#2e1065] hover:bg-[#00A4FF] duration-500" type="submit">
+        <Button
+          className="mt-4 bg-[#2e1065] hover:bg-[#00A4FF] duration-500"
+          type="submit">
           Publish
         </Button>
       </form>

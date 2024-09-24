@@ -26,7 +26,7 @@ import { ClipLoader, FadeLoader } from "react-spinners";
 import logoimg from "../../imgs/logo (1).png";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 const Companies = () => {
   // const token = useSelector((state) => state.auth.token);
@@ -54,7 +54,7 @@ const Companies = () => {
 
   console.log(companies);
 
-  const handleDeleteCompany = (id , name) => {
+  const handleDeleteCompany = (id, name) => {
     confirmAlert({
       title: `Confirm to Delete ${name}`,
       message: `Are you sure you want delete ${name}?`,
@@ -88,80 +88,43 @@ const Companies = () => {
   };
 
   const handleSearch = (value) => {
-    setSearchFilter(value);
+    // setSearchFilter(value);
   };
 
-  const companiesData = searchFilter
-    ? companies
-        .filter((x) => x.name.includes(searchFilter))
-        .map(({ _id, name, logo, adminDetails }) => {
+  const companiesData = companies.map(({ _id, name, logo, adminDetails }) => {
+    return (
+      <TableRow>
+        <TableCell className="font-medium">{name}</TableCell>
+        {adminDetails.map(({ employeeLimit, email }) => {
           return (
-            <TableRow>
-              <TableCell className="font-medium">{name}</TableCell>
-              {adminDetails.map(({ employeeLimit, email }) => {
-                return (
-                  <>
-                    <TableCell>{employeeLimit}</TableCell>
-                    <TableCell>{email}</TableCell>
-                  </>
-                );
-              })}
-
-              <img
-                className="w-10 h-10 object-contain rounded-full"
-                src={logo}
-                alt="logo"></img>
-              <TableCell>
-                <div className="flex items-center justify-center">
-                  <button
-                    onClick={() => handleDeleteCompany(_id , name)}
-                    className="rounded-lg text-red-600  px-5 py-2">
-                    Delete
-                  </button>
-                  <Link
-                    to={`/companies/edit/${_id}`}
-                    className="rounded-lg text-green-600  px-5 py-2">
-                    Edit
-                  </Link>
-                </div>
-              </TableCell>
-            </TableRow>
+            <>
+              <TableCell>{employeeLimit}</TableCell>
+              <TableCell>{email}</TableCell>
+            </>
           );
-        })
-    : companies.map(({ _id, name, logo, adminDetails }) => {
-        return (
-          <TableRow>
-            <TableCell className="font-medium">{name}</TableCell>
-            {adminDetails.map(({ employeeLimit, email }) => {
-              return (
-                <>
-                  <TableCell>{employeeLimit}</TableCell>
-                  <TableCell>{email}</TableCell>
-                </>
-              );
-            })}
+        })}
 
-            <img
-              className="w-10 h-10 object-contain rounded-full"
-              src={logo}
-              alt="logo"></img>
-            <TableCell>
-              <div className="flex items-center justify-center">
-                <button
-                  onClick={() => handleDeleteCompany(_id , name)}
-                  className="rounded-lg text-red-600  px-5 py-2">
-                  Delete
-                </button>
-                <Link
-                  to={`/companies/edit/${_id}`}
-                  className="rounded-lg text-green-600  px-5 py-2">
-                  Edit
-                </Link>
-              </div>
-            </TableCell>
-          </TableRow>
-        );
-      });
+        <img
+          className="w-10 h-10 object-contain rounded-full"
+          src={logo}
+          alt="logo"></img>
+        <TableCell>
+          <div className="flex items-center justify-center">
+            <button
+              onClick={() => handleDeleteCompany(_id, name)}
+              className="rounded-lg text-red-600  px-5 py-2">
+              Delete
+            </button>
+            <Link
+              to={`/companies/edit/${_id}`}
+              className="rounded-lg text-green-600  px-5 py-2">
+              Edit
+            </Link>
+          </div>
+        </TableCell>
+      </TableRow>
+    );
+  });
   if (loading)
     return (
       <div className="flex items-center justify-center h-screen">

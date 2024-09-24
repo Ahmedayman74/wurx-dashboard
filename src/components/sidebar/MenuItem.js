@@ -14,11 +14,11 @@ const MenuItem = ({
     <Link className={`${!isSuperAdmin && `hidden`}`} to={`/${link}`}>
       <li
         onClick={onClick}
-        className={`flex items-center justify-center lg:justify-normal text-gray-600 px-5 py-3 duration-500 hover:bg-violet-950 ${
+        className={`flex justify-normal text-gray-600 px-5 py-3 duration-500 hover:bg-violet-950 ${
           isActive ? "bg-violet-950 text-white" : "hover:text-white"
         }`}>
         {icon}
-        <p className="ms-6 hidden lg:block">{menuItemText}</p>
+        <p className="ms-6">{menuItemText}</p>
       </li>
     </Link>
   );
