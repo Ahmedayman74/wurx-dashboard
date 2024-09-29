@@ -1,17 +1,13 @@
 import React from "react";
-import Logo from "../sidebar/Logo";
-import logoimg from "../../imgs/logo (1).png";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../../rtk/slices/auth-slice";
-import { Navigate, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const LoginUi = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const Schema = Yup.object().shape({
@@ -44,7 +40,7 @@ const Login = () => {
   });
 
   return (
-    <div className="flex items-center justify-center h-screen px-10 bg-[#eee]">
+    <div className="flex flex-col items-center justify-center h-screen px-10 bg-[#eee]">
       <div className="flex flex-col items-center justify-center w-full max-w-md bg-white py-20 px-10 rounded-md  ">
         <img
           className="w-40 mb-6"
@@ -94,8 +90,18 @@ const Login = () => {
           </button>
         </form>
       </div>
+      <div className=" text-center py-3  text-sm  md:z-[1] lg:z-[102] absolute bottom-0">
+        all rights reserved to
+        <a
+          className="text-[#00A4FF] inline-block px-1 font-bold"
+          target="_blank"
+          href="https://wurxeg.com/">
+          wurx.com
+        </a>
+        version : 1.0
+      </div>
     </div>
   );
 };
 
-export default Login;
+export default LoginUi;

@@ -24,7 +24,7 @@ export const login = createAsyncThunk("auth/login", async (data, thunkAPI) => {
     });
      localStorage.setItem("token" , response.data.token)
      localStorage.setItem("role" , response.data.role)
-
+     localStorage.setItem("companyName" , response.data.companyName)
     return response.data;
   } catch (error) {
     toast.error(error.response.data.message || "Login Failed", {

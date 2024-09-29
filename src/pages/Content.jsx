@@ -1,11 +1,10 @@
 import React from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import SidebarNav from "../sidebar/SidebarNav";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Outlet, useNavigate } from "react-router-dom";
+import SidebarNav from "../components/Sidebar/Sidebar";
+import { Button } from "../components/ui/button";
 import { Menu } from "lucide-react";
 import { useDispatch } from "react-redux";
-import { toggleSidebar } from "../../rtk/slices/sidebar-slice";
+import { toggleSidebar } from "../rtk/slices/sidebar-slice";
 
 const Content = () => {
   const navigate = useNavigate();

@@ -1,7 +1,6 @@
 import Logo from "./Logo";
-import MenuList from "./MenuList";
+import MenuList from "./Menu/MenuList";
 import logoimg from "../../imgs/logo-wuccccrx-cart.png";
-import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { X } from "lucide-react";
 import { toggleSidebar } from "../../rtk/slices/sidebar-slice";
@@ -15,7 +14,7 @@ const SidebarNav = () => {
       <div
         className={` absolute top-0 z-[100] ${
           sidebartoggle ? `left-0` : `left-[-300px]`
-        } lg:static duration-500 w-[300px] h-screen bg-white shadow-lg`}>
+        } lg:static duration-500 w-[300px] h-screen bg-white `}>
         <div className="p-2 lg:p-5 flex items-center justify-between">
           <Logo img={logoimg} />
           <X

@@ -10,70 +10,45 @@ import {
 } from "../ui/table.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Button } from "../ui/button.jsx";
 import { Input } from "../ui/input.jsx";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
 } from "../ui/select.jsx";
 import { SelectValue } from "@radix-ui/react-select";
-import { ClipLoader, FadeLoader } from "react-spinners";
-import { toast } from "react-toastify";
+import { FadeLoader } from "react-spinners";
+import { ToastContainer } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import {
+  deleteUser,
+  getUsers,
+  getUsersForFilter,
+} from "../../api/userRequests.js";
+import { getCompanies } from "../../api/companyRequests.js";
 
-const Dashboard = () => {
-  // const token = useSelector((state) => state.auth.token);
-  // const role = useSelector((state) => state.auth.role);
-
+const UsersUi = () => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
+  const companyName = localStorage.getItem("companyName");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [loadingTable, setLoadingTable] = useState(true);
   const [companies, setCompanies] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [selectValue, setSelectValue] = useState(null);
   const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
+  const [filterPending, setFilterPending] = useState(false);
 
   useEffect(() => {
-    axios
-      .get("https://tasktrial.vercel.app/allUsers", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setUsers(response.data);
-        setLoading(false);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    getUsers(setUsers, token, setLoading);
   }, [token, refresh]);
 
   useEffect(() => {
-    axios
-      .get("https://tasktrial.vercel.app/allCompanies", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setCompanies(response.data);
-        setLoadingTable(false);
-        setLoading(false);
-      })
-      .catch(function (error) {
-        console.log(error);
-        setLoadingTable(false);
-        setLoading(false);
-      });
+    getCompanies(token, setCompanies, setLoading);
   }, [users, token]);
 
   const handleDeleteUser = (id, firstname, lastname) => {
@@ -84,16 +59,7 @@ const Dashboard = () => {
         {
           label: "Yes",
           onClick: () => {
-            axios
-              .delete(`https://tasktrial.vercel.app/deleteUser/${id}`)
-              .then((response) => {
-                console.log(`Deleted post with ID ${id}`);
-                setRefresh(true);
-              })
-              .catch((error) => {
-                console.error(error);
-              });
-            toast.success(`${firstname} Deleted successfully!`);
+            deleteUser(id, setRefresh, firstname, setPending);
           },
         },
         {
@@ -105,30 +71,37 @@ const Dashboard = () => {
   };
 
   const handleCompanyChange = (value) => {
-    setLoadingTable(true);
     setError("");
-    axios
-      .get(`https://tasktrial.vercel.app/companyUsers?companyName=${value}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(function (response) {
-        setUsers(response.data);
-        setSelectValue(value);
-        setLoadingTable(false);
-        setError("");
-      })
-      .catch(function (error) {
-        console.log(error);
-        setLoadingTable(false);
-        setUsers([]);
-        setError("No users found");
-      });
+    setFilterPending(true);
+    if (value !== "all") {
+      axios
+        .get(`https://tasktrial.vercel.app/companyUsers?companyName=${value}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(function (response) {
+          setUsers(response.data);
+          setSelectValue(value);
+          setError("");
+          setFilterPending(false);
+        })
+        .catch(function (error) {
+          setUsers([]);
+          setError(
+            <div className="h-[5vh] text-[#00A4FF] font-bold">
+              No users found
+            </div>
+          );
+          setFilterPending(false);
+        });
+    } else {
+      getUsersForFilter(setUsers, token, setLoading, setFilterPending);
+      // console.log(users);
+    }
   };
 
   const handleSearch = (value) => {
-    console.log(value);
     if (value !== "") {
       axios
         .get(`https://tasktrial.vercel.app/filterUsers?userName=${value}`, {
@@ -138,25 +111,24 @@ const Dashboard = () => {
         })
         .then(function (response) {
           setUsers(response.data);
-          setLoadingTable(false);
           setError("");
         })
         .catch(function (error) {
           console.log(error);
-          setLoadingTable(false);
           setUsers([]);
           setError("No users found");
         });
+    } else {
+      getUsers(setUsers, token, setLoading);
     }
   };
 
-  console.log(users);
   const percentage = Math.floor((users.length / 12) * 100);
 
   const usersData = users.map(
     ({ _id, firstname, lastname, phone, email, position, avatar }) => {
       return (
-        <TableRow>
+        <TableRow key={_id}>
           <TableCell className="font-medium">{firstname + lastname}</TableCell>
           <TableCell>{phone}</TableCell>
           <TableCell>{email}</TableCell>
@@ -164,7 +136,11 @@ const Dashboard = () => {
           <TableCell>
             <img
               className="w-10 h-10 object-cover rounded-full"
-              src={avatar ? `${avatar}` : require("../../imgs/logo-wurx-cart (1).png")}
+              src={
+                avatar
+                  ? `${avatar}`
+                  : require("../../imgs/logo-wurx-cart (1).png")
+              }
               alt="avatar"></img>
           </TableCell>
           <TableCell>
@@ -194,7 +170,7 @@ const Dashboard = () => {
     return (
       <div className="flex items-center justify-center h-screen">
         <FadeLoader
-          color={"#CB5BC3"}
+          color={"#00A4FF"}
           loading={loading}
           size={50}
           aria-label="Loading Spinner"
@@ -205,12 +181,10 @@ const Dashboard = () => {
 
   let placeholder = "";
 
-  console.log(loadingTable);
-
   if (role === "SuperAdmin" && selectValue === null) {
     placeholder = "Select a Company";
   } else if (role === "Admin" && users.length > 0) {
-    placeholder = users[0].companyName || "No User Available";
+    placeholder = companyName || "No User Available";
   } else {
     placeholder = selectValue || "Select a Company";
   }
@@ -235,6 +209,7 @@ const Dashboard = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
+                <SelectItem value={"all"}>all</SelectItem>
                 {companies.map((company, index) => {
                   return (
                     <SelectItem key={index} value={company.name}>
@@ -285,23 +260,52 @@ const Dashboard = () => {
               <TableHead className="text-center">Action</TableHead>
             </TableRow>
           </TableHeader>
-          {!loadingTable ? (
+          {!filterPending ? (
             <TableBody>{usersData}</TableBody>
           ) : (
-            <div className="flex items-center justify-center w-full h-[20vh]">
-              <FadeLoader
-                color={"#00A4FF"}
-                loading={loadingTable}
-                size={50}
-                aria-label="Loading Spinner"
-                data-testid="loader"
-              />
-            </div>
+            <TableBody>
+              <div className="h-[20vh] w-full">
+                <div className=" absolute top-1/2 left-1/2">
+                  <FadeLoader
+                    color={"#00A4FF"}
+                    loading={filterPending}
+                    size={30}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                </div>
+              </div>
+            </TableBody>
           )}
         </Table>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="light"
+      />
+      {pending && (
+        <div className="fixed h-screen top-0 left-0 bg-[#ffffff80] w-full">
+          <div className=" absolute top-1/2 left-1/2">
+            <FadeLoader
+              color={"#00A4FF"}
+              loading={pending}
+              size={50}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 };
 
-export default Dashboard;
+export default UsersUi;

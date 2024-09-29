@@ -9,7 +9,6 @@ const MenuItem = ({
   onClick,
   isSuperAdmin,
 }) => {
-  console.log(isSuperAdmin);
   return (
     <Link className={`${!isSuperAdmin && `hidden`}`} to={`/${link}`}>
       <li

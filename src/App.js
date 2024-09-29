@@ -1,33 +1,33 @@
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
-import Content from "./components/content/Content";
-import AddUser from "./components/content/AddUser";
-import Dashboard from "./components/content/Dashboard";
-import EditUser from "./components/content/EditUser";
-import Settings from "./components/content/Settings";
-import User from "./components/content/User";
-import Login from "./components/content/Login";
+import {
+  Content,
+  Login,
+  Users,
+  AddUser,
+  EditUser,
+  Companies,
+  AddCompany,
+  EditCompany,
+  User,
+} from "./pages";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CompanyForm from "./components/content/CompanyForm";
-import Companies from "./components/content/Companies";
-import EditCompanies from "./components/content/EditCompanies";
 
 function App() {
   const auth = useSelector((state) => state.auth);
-  const token = localStorage.getItem("token")
-  const role = localStorage.getItem("role")
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (token && role === "employee") {
       navigate(`dashboard/users/${auth.id}`);
     }
-  }, [token, role ,  navigate]);
+  }, [token, role, navigate]);
 
   const isSuperAdmin = token && role === "superAdmin";
   const isAdmin = token && role === "Admin";
@@ -44,7 +44,7 @@ function App() {
           path="/"
           element={
             token ? (
-              (isSuperAdmin || isAdmin) ? (
+              isSuperAdmin || isAdmin ? (
                 <Content />
               ) : (
                 <Navigate to="/login" replace />
@@ -53,19 +53,14 @@ function App() {
               <Navigate to="/login" replace />
             )
           }>
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="dashboard" element={<Users />} />
           <Route path="user" element={<AddUser />} />
           <Route path="users/edit/:id" element={<EditUser />} />
-          <Route path="companies/edit/:id" element={<EditCompanies />} />
-          <Route path="settings" element={<Settings />} />
+          <Route path="companies/edit/:id" element={<EditCompany />} />
 
           {/* SuperAdmin exclusive route */}
-          {isSuperAdmin && (
-            <Route path="companies" element={<Companies />} />
-          )}
-          {isSuperAdmin && (
-            <Route path="company" element={<CompanyForm />} />
-          )}
+          {isSuperAdmin && <Route path="companies" element={<Companies />} />}
+          {isSuperAdmin && <Route path="company" element={<AddCompany />} />}
         </Route>
 
         {/* Route accessible for specific user roles */}

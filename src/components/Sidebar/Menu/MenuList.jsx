@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { Building, User } from "lucide-react";
 import MenuItem from "./MenuItem";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleSidebar } from "../../rtk/slices/sidebar-slice";
+import { toggleSidebar } from "../../../rtk/slices/sidebar-slice";
 
 const MenuList = () => {
-  // const auth = useSelector((state) => state.auth);
-  const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
   const dispatch = useDispatch();
   const sidebartoggle = useSelector((state) => state.sidebar.isOpen);
@@ -24,13 +22,7 @@ const MenuList = () => {
       link: "companies",
       isActive: false,
       isSuperAdmin: role === "superAdmin",
-    },
-    // {
-    //   icon: <Settings />,
-    //   menuItemText: "Settings",
-    //   link: "settings",
-    //   isActive: false,
-    // },
+    }
   ]);
 
   const handleItemClick = (index) => {

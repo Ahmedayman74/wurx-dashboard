@@ -4,15 +4,11 @@ import { useParams } from "react-router-dom";
 import QRCode from "react-qr-code";
 import {
   ArrowDown,
-  ExternalLink,
-  Facebook,
-  Instagram,
   MapPin,
-  Twitter,
 } from "lucide-react";
 import ModalImage from "react-modal-image";
 
-const User = () => {
+const UserUi = () => {
   const params = useParams();
   const [user, setUser] = useState({});
   const [downloadTriggered, setDownloadTriggered] = useState(false);
@@ -203,4 +199,4 @@ END:VCARD`;
   );
 };
 
-export default User;
+export default UserUi;
