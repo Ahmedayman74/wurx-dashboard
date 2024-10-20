@@ -55,6 +55,12 @@ const AddUserUi = () => {
       .test("is-linkedin-url", "Invalid LinkedIn URL", (value) =>
         value ? value.includes("linkedin.com") : true
       ),
+    address: Yup.string()
+      .required("Address is required")
+      .url("Invalid Address URL")
+      .test("is-address-url", "Invalid Address URL", (value) =>
+        value ? value.includes("https://www.google.com/maps/place/") : true
+      ),
   });
 
   const formik = useFormik({
@@ -72,7 +78,7 @@ const AddUserUi = () => {
       xTwitter: "",
       linkedIn: "",
       instagram: "",
-      cover: "",
+      address: "",
     },
     validationSchema: Schema,
     onSubmit: (values) => {
@@ -186,12 +192,15 @@ const AddUserUi = () => {
               type="file"
             />
 
-            <FileField
-              label="Cover"
-              id="cover"
+            <Field
+              label="Address"
+              type="text"
+              name="address"
               formik={formik}
-              name="cover"
-              type="file"
+              value={formik.values.address}
+              error={formik.errors.address}
+              touched={formik.touched.address}
+              id="address"
             />
           </div>
         </div>

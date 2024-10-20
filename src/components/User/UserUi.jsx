@@ -2,23 +2,24 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import QRCode from "react-qr-code";
-import {
-  ArrowDown,
-  MapPin,
-} from "lucide-react";
+import { ArrowDown, MapPin } from "lucide-react";
 import ModalImage from "react-modal-image";
+import { FaFacebookF, FaInstagram } from "react-icons/fa";
+import { FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 
 const UserUi = () => {
   const params = useParams();
   const [user, setUser] = useState({});
+  const [cover, setCover] = useState();
   const [downloadTriggered, setDownloadTriggered] = useState(false);
 
   useEffect(() => {
     axios
       .get(`https://tasktrial.vercel.app/getUser/${params.userId}`)
       .then(function (response) {
-        setUser(response.data);
-        console.log(response);
+        setUser(response.data.user);
+        setCover(response.data.companyCover);
+        // console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -84,8 +85,8 @@ END:VCARD`;
       <div className="relative md:max-w-lg bg-white">
         <ModalImage
           className="w-full h-[220px] object-cover"
-          small={user.cover}
-          large={user.cover}
+          small={cover}
+          large={cover}
           alt="Bussines Card"
         />
         <div className="pb-10 container px-10">
@@ -141,7 +142,7 @@ END:VCARD`;
               viewBox={`0 0 130 130`}
             />
           </div>
-          <div className="flex items-center flex-wrap sm:flex-nowrap gap-5">
+          <div className="flex items-center flex-wrap sm:flex-nowrap gap-5 my-5">
             <div className="flex items-center justify-center gap-2 w-full sm:w-fit">
               <button
                 className="bg-[#AF0A81] w-full text-white px-5 py-2 rounded-sm flex justify-center items-center gap-4"
@@ -156,9 +157,7 @@ END:VCARD`;
             <div className="flex items-center justify-center gap-2 w-full sm:w-fit">
               <a
                 target="blank"
-                href={
-                  "https://www.google.com/maps/@31.2118627,29.9393604,15z?entry=ttu"
-                }
+                href={user.address}
                 className="bg-indigo-950 w-full text-white px-5 py-2 rounded-sm flex justify-center items-center gap-4">
                 <span>
                   <MapPin />
@@ -167,30 +166,18 @@ END:VCARD`;
               </a>
             </div>
           </div>
-          <div className=" mt-5 flex items-center justify-center gap-4">
+          <div className=" mt-5 flex items-center justify-start gap-3">
             <a target="blank" href={user.facebook}>
-              <img alt="" src={require("../../imgs/Vector (10).png")} />
+              <FaFacebookF size={22} />
             </a>
             <a target="blank" href={user.xTwitter}>
-              <img
-                className="w-7 h-7"
-                alt=""
-                src={require("../../imgs/image 5 (3).png")}
-              />
+              <FaXTwitter size={22} />
             </a>
             <a target="blank" href={user.instagram}>
-              <img
-                className="w-7 h-7"
-                alt=""
-                src={require("../../imgs/Vector (15).png")}
-              />
+              <FaInstagram size={22} />
             </a>
             <a target="blank" href={user.linkedIn}>
-              <img
-                className="w-7 h-7"
-                alt=""
-                src={require("../../imgs/Vector (16).png")}
-              />
+              <FaLinkedinIn size={22} />
             </a>
           </div>
         </div>

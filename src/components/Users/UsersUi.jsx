@@ -234,9 +234,10 @@ const UsersUi = () => {
         <div className="bg-white rounded-lg p-5 mt-10">
           <h1 className="text-[#2e1065] font-bold">Users Qoute</h1>
           <div className="bg-[#2e1065] w-full h-[14px] rounded-lg my-6">
-            {percentage && (
+            {percentage !== 0 && (
               <span
-                className={`bg-[#CB5BC3] block w-[${percentage}%]  h-full rounded-lg`}></span>
+                style={{ width: `${percentage}%` }}
+                className={`bg-[#CB5BC3] block  h-full rounded-lg`}></span>
             )}
           </div>
           <h1 className="text-[##2e1065]">

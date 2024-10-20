@@ -5,7 +5,7 @@ import { Input } from "../ui/input";
 const FileField = ({ label, id, formik, name, type }) => {
   return (
     <div className="mb-2">
-      <Label htmlFor="img">{label}</Label>
+      <Label htmlFor={id}>{label}</Label>
       <Input
         type={type}
         id={id}

@@ -23,11 +23,10 @@ const CompaniesUi = () => {
   const [loading, setLoading] = useState(true);
   const [isRefresh, setIsRefresh] = useState(false);
   const [pending, setPending] = useState(false);
-
+  const [isFilter, isFilterSet] = useState(false);
   useEffect(() => {
     getCompanies(token, setCompanies, setLoading);
   }, [isRefresh, token]);
-
 
   const handleDeleteCompany = (id, name) => {
     confirmAlert({
@@ -49,6 +48,7 @@ const CompaniesUi = () => {
   };
 
   const handleSearch = (value) => {
+    isFilterSet(true);
     if (value !== "") {
       axios
         .get(
@@ -61,6 +61,7 @@ const CompaniesUi = () => {
         )
         .then(function (response) {
           setCompanies(response?.data);
+          console.log(response.data);
           setLoading(false);
         })
         .catch(function (error) {
@@ -68,6 +69,7 @@ const CompaniesUi = () => {
         });
     } else {
       getCompanies(token, setCompanies, setLoading);
+      isFilterSet(false)
     }
   };
 
@@ -85,6 +87,36 @@ const CompaniesUi = () => {
             );
           })}
 
+          <img
+            className="w-10 h-10 object-contain rounded-full"
+            src={logo}
+            alt="logo"></img>
+          <TableCell>
+            <div className="flex items-center justify-center">
+              <button
+                onClick={() => handleDeleteCompany(_id, name)}
+                className="rounded-lg text-red-600  px-5 py-2">
+                Delete
+              </button>
+              <Link
+                to={`/companies/edit/${_id}`}
+                className="rounded-lg text-green-600  px-5 py-2">
+                Edit
+              </Link>
+            </div>
+          </TableCell>
+        </TableRow>
+      );
+    }
+  );
+
+  const filterCompaniesData = companies.map(
+    ({ _id, name, logo, admin_email, employee_limit }, index) => {
+      return (
+        <TableRow key={index}>
+          <TableCell className="font-medium">{name}</TableCell>
+          <TableCell>{employee_limit}</TableCell>
+          <TableCell>{admin_email}</TableCell>
           <img
             className="w-10 h-10 object-contain rounded-full"
             src={logo}
@@ -148,7 +180,9 @@ const CompaniesUi = () => {
               <TableHead className="text-center">Action</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>{companiesData}</TableBody>
+          <TableBody>
+            {isFilter ? filterCompaniesData : companiesData}
+          </TableBody>
         </Table>
       </div>
       <ToastContainer />

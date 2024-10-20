@@ -31,6 +31,7 @@ const AddCompanyUi = () => {
       companyName: "",
       email: "",
       logo: "",
+      cover: "",
     },
     validationSchema: Schema,
     onSubmit: (values) => {
@@ -90,6 +91,14 @@ const AddCompanyUi = () => {
               id="logo"
               formik={formik}
               name="logo"
+              type="file"
+            />
+
+            <FileField
+              label="Cover"
+              id="cover"
+              formik={formik}
+              name="cover"
               type="file"
             />
           </div>
